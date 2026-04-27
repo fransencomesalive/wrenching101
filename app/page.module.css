@@ -1,142 +1,555 @@
+/* ─── Design tokens ───────────────────────────────────────────────────────── */
+
 .page {
-  --background: #fafafa;
-  --foreground: #fff;
+  --w-bg:          #010f16;
+  --w-panel:       rgba(0, 12, 18, 0.85);
+  --w-teal:        #00aac9;
+  --w-teal-border: rgba(0, 170, 201, 0.38);
+  --w-teal-fill:   rgba(0, 170, 201, 0.08);
+  --w-amber:       #fcba4b;
+  --w-red:         #b83220;
+  --w-cream:       #f8d29a;
+  --w-muted:       rgba(248, 210, 154, 0.72);
+  --w-faint:       rgba(248, 210, 154, 0.40);
+  --w-display:     'New Athletic 54', Impact, Haettenschweiler, sans-serif;
+  --w-body:        'Gotham', 'Avenir Next', Avenir, Helvetica, Arial, sans-serif;
+  --w-title:       'Patheos', Georgia, serif;
 
-  --text-primary: #000;
-  --text-secondary: #666;
-
-  --button-primary-hover: #383838;
-  --button-secondary-hover: #f2f2f2;
-  --button-secondary-border: #ebebeb;
-
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-geist-sans);
-  background-color: var(--background);
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: var(--w-bg);
+  color: var(--w-cream);
+  font-family: var(--w-body);
 }
 
-.main {
-  display: flex;
-  flex: 1;
-  width: 100%;
-  max-width: 800px;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  background-color: var(--foreground);
-  padding: 120px 60px;
+/* ─── Layout ──────────────────────────────────────────────────────────────── */
+
+.maxWidth {
+  width: min(1180px, calc(100% - 48px));
+  margin-inline: auto;
 }
 
-.intro {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  gap: 24px;
+/* ─── Hero ────────────────────────────────────────────────────────────────── */
+
+.hero {
+  position: relative;
+  z-index: 1;
+  padding-block: clamp(32px, 5vh, 52px) 16px;
 }
 
-.intro h1 {
-  max-width: 320px;
-  font-size: 40px;
-  font-weight: 600;
-  line-height: 48px;
-  letter-spacing: -2.4px;
-  text-wrap: balance;
-  color: var(--text-primary);
+.kicker {
+  margin: 0 0 12px;
+  font-family: var(--w-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--w-amber);
+  text-shadow: 0 0 24px rgba(252, 186, 75, 0.25);
 }
 
-.intro p {
-  max-width: 440px;
-  font-size: 18px;
-  line-height: 32px;
-  text-wrap: balance;
-  color: var(--text-secondary);
+.headline {
+  position: relative;
+  margin: 0 0 16px;
+  font-family: var(--w-title);
+  font-size: clamp(64px, 8.2vw, 130px);
+  font-weight: 400;
+  line-height: 0.92;
+  white-space: nowrap;
+  isolation: isolate;
 }
 
-.intro a {
-  font-weight: 500;
-  color: var(--text-primary);
+.titleText {
+  display: block;
+  position: relative;
+  z-index: 3;
+  color: var(--w-red);
 }
 
-.ctas {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  max-width: 440px;
+.titleShadowStrong {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  color: rgba(0, 0, 0, 0.46);
+  filter: blur(7px);
+  transform: translate(10px, 8px);
+  pointer-events: none;
+}
+
+.titleShadowSoft {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  color: rgba(1, 28, 36, 0.5);
+  filter: blur(18px);
+  transform: translate(16px, 14px);
+  pointer-events: none;
+}
+
+.tagline {
+  max-width: 680px;
+  margin: 0;
+  font-family: var(--w-display);
+  font-size: clamp(15px, 1.3vw, 19px);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--w-cream);
+}
+
+/* ─── Intro + RSVP row ────────────────────────────────────────────────────── */
+
+.introRsvpSection {
+  position: relative;
+  z-index: 1;
+  padding-block: 16px clamp(16px, 2vh, 24px);
+}
+
+.introRsvpGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 16px;
-  font-size: 14px;
+  align-items: stretch;
 }
 
-.ctas a {
+.introCard {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 40px;
-  padding: 0 16px;
-  border-radius: 128px;
-  border: 1px solid transparent;
-  transition: 0.2s;
-  cursor: pointer;
-  width: fit-content;
-  font-weight: 500;
+  flex-direction: column;
 }
 
-a.primary {
-  background: var(--text-primary);
-  color: var(--background);
+.introBody {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--w-muted);
+  text-wrap: pretty;
+  margin-bottom: 18px;
+}
+
+.eventMetaCard {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding-top: 14px;
+  border-top: 1px solid var(--w-teal-border);
+}
+
+.metaItem {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.metaItemLabel {
+  font-family: var(--w-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--w-faint);
+}
+
+.metaItemValue {
+  font-family: var(--w-display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--w-cream);
+}
+
+/* ─── Section shared ──────────────────────────────────────────────────────── */
+
+.section {
+  position: relative;
+  z-index: 1;
+  padding-block: clamp(16px, 2.5vh, 28px);
+}
+
+.sectionKicker {
+  margin: 0 0 4px;
+  font-family: var(--w-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--w-amber);
+}
+
+.sectionHeading {
+  margin: 0 0 16px;
+  font-family: var(--w-display);
+  font-size: clamp(18px, 1.8vw, 24px);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--w-cream);
+}
+
+/* ─── Agenda grid ─────────────────────────────────────────────────────────── */
+
+.agendaGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.agendaCard {
+  background: var(--w-panel);
+  border: 2px solid var(--w-teal-border);
+  border-radius: 3px;
+  padding: 16px 18px 18px;
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  grid-template-rows: auto 1fr;
+  column-gap: 8px;
+  row-gap: 5px;
+}
+
+.agendaNumber {
+  grid-column: 1;
+  grid-row: 1;
+  padding-top: 2px;
+  font-family: var(--w-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--w-teal);
+}
+
+.agendaTitle {
+  grid-column: 2;
+  grid-row: 1;
+  font-family: var(--w-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--w-amber);
+}
+
+.agendaDesc {
+  grid-column: 2;
+  grid-row: 2;
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--w-muted);
+}
+
+/* ─── Card shared ─────────────────────────────────────────────────────────── */
+
+.card {
+  background: var(--w-panel);
+  border: 2px solid var(--w-teal-border);
+  border-radius: 3px;
+  padding: 20px 22px;
+}
+
+.cardHeading {
+  margin: 0 0 14px;
+  font-family: var(--w-display);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--w-amber);
+}
+
+/* ─── RSVP form ───────────────────────────────────────────────────────────── */
+
+.formGroup {
+  margin-bottom: 12px;
+}
+
+.formLabel {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--w-faint);
+}
+
+.input {
+  width: 100%;
+  background: var(--w-teal-fill);
+  border: 1px solid var(--w-teal-border);
+  border-radius: 3px;
+  padding: 8px 12px;
+  color: var(--w-cream);
+  font-family: var(--w-body);
+  font-size: 14px;
+  font-weight: 300;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.input:focus {
+  border-color: var(--w-teal);
+}
+
+.input::placeholder {
+  color: var(--w-faint);
+}
+
+.radioGroup {
+  display: flex;
   gap: 8px;
 }
 
-a.secondary {
-  border-color: var(--button-secondary-border);
+.radioLabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex: 1;
+  padding: 7px 12px;
+  background: var(--w-teal-fill);
+  border: 1px solid var(--w-teal-border);
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--w-muted);
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
 }
 
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  a.primary:hover {
-    background: var(--button-primary-hover);
-    border-color: transparent;
-  }
-
-  a.secondary:hover {
-    background: var(--button-secondary-hover);
-    border-color: transparent;
-  }
+.radioLabel:has(input:checked) {
+  border-color: var(--w-teal);
+  color: var(--w-cream);
+  background: rgba(0, 170, 201, 0.14);
 }
 
-@media (max-width: 600px) {
-  .main {
-    padding: 48px 24px;
-  }
-
-  .intro {
-    gap: 16px;
-  }
-
-  .intro h1 {
-    font-size: 32px;
-    line-height: 40px;
-    letter-spacing: -1.92px;
-  }
+.radioLabel input {
+  width: 13px;
+  height: 13px;
+  accent-color: var(--w-teal);
 }
 
-@media (prefers-color-scheme: dark) {
-  .logo {
-    filter: invert();
+.submitBtn {
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px 20px;
+  background: var(--w-teal);
+  border: none;
+  border-radius: 3px;
+  color: #010f16;
+  font-family: var(--w-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.submitBtn:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+.submitBtn:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+.formError {
+  margin-top: 8px;
+  font-size: 12px;
+  color: rgba(200, 70, 50, 0.9);
+}
+
+.confirmation {
+  padding: 12px 14px;
+  border: 1px solid rgba(0, 170, 201, 0.38);
+  border-radius: 3px;
+  background: rgba(0, 170, 201, 0.08);
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--w-cream);
+}
+
+/* ─── RSVP attendee list ──────────────────────────────────────────────────── */
+
+.listDivider {
+  height: 1px;
+  background: var(--w-teal-border);
+  margin: 14px 0;
+}
+
+.attendeeCount {
+  margin-bottom: 8px;
+  font-family: var(--w-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  color: var(--w-faint);
+}
+
+.attendeeGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px 12px;
+}
+
+.attendeeSlot {
+  height: 20px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.attendeeItem {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--w-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.attendeeItem::before {
+  content: '';
+  flex-shrink: 0;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--w-teal);
+  opacity: 0.65;
+}
+
+/* ─── Diagram placeholder ─────────────────────────────────────────────────── */
+
+.diagramSection {
+  position: relative;
+  z-index: 1;
+  padding-block: clamp(16px, 2.5vh, 28px);
+}
+
+.diagramPlaceholder {
+  position: relative;
+  min-height: 320px;
+  background: rgba(0, 4, 8, 0.97);
+  border: 2px solid rgba(0, 170, 201, 0.18);
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  overflow: hidden;
+}
+
+.diagramPlaceholder::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 170, 201, 0.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 170, 201, 0.032) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events: none;
+}
+
+.diagramTag {
+  position: relative;
+  z-index: 1;
+  font-family: var(--w-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(0, 170, 201, 0.55);
+}
+
+.diagramTitle {
+  position: relative;
+  z-index: 1;
+  font-family: var(--w-display);
+  font-size: clamp(15px, 1.4vw, 20px);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: rgba(252, 186, 75, 0.60);
+  text-align: center;
+}
+
+.diagramDesc {
+  position: relative;
+  z-index: 1;
+  max-width: 380px;
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.55;
+  color: rgba(248, 210, 154, 0.35);
+  text-align: center;
+  text-wrap: pretty;
+}
+
+/* ─── Syllabus ────────────────────────────────────────────────────────────── */
+
+.syllabusSection {
+  position: relative;
+  z-index: 1;
+  padding-block: clamp(20px, 3vh, 36px);
+  border-top: 1px solid rgba(0, 170, 201, 0.12);
+}
+
+.syllabusRow {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.syllabusLabel {
+  font-family: var(--w-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--w-faint);
+}
+
+.syllabusBtn {
+  padding: 8px 18px;
+  background: transparent;
+  border: 1px solid rgba(0, 170, 201, 0.22);
+  border-radius: 3px;
+  color: rgba(248, 210, 154, 0.38);
+  font-family: var(--w-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  cursor: not-allowed;
+}
+
+/* ─── Responsive ──────────────────────────────────────────────────────────── */
+
+@media (max-width: 700px) {
+  .agendaGrid {
+    grid-template-columns: 1fr;
   }
 
-  .page {
-    --background: #000;
-    --foreground: #000;
+  .introRsvpGrid {
+    grid-template-columns: 1fr;
+  }
 
-    --text-primary: #ededed;
-    --text-secondary: #999;
+  .eventMetaCard {
+    grid-template-columns: repeat(3, 1fr);
+  }
 
-    --button-primary-hover: #ccc;
-    --button-secondary-hover: #1a1a1a;
-    --button-secondary-border: #1a1a1a;
+  .headline {
+    white-space: normal;
+    font-size: clamp(52px, 14vw, 90px);
+  }
+
+  .syllabusRow {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }

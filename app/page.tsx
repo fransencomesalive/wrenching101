@@ -1,66 +1,149 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import MettleBackground from './MettleBackground'
+import RSVPSection from './RSVPSection'
+import styles from './page.module.css'
 
-export default function Home() {
+const EVENT_DATE = 'May 12'
+const EVENT_TIME = 'Time TBD'
+const EVENT_LOCATION = 'Location TBD'
+
+const AGENDA_ITEMS = [
+  {
+    title: 'Bike types and geometry',
+    desc: 'Road, gravel, and cyclocross bikes look similar until they don\'t. Frame geometry, wheel clearance, and intended use all shape how a bike rides — and which one fits your riding.',
+  },
+  {
+    title: 'Frame materials',
+    desc: 'Carbon, steel, and aluminum aren\'t just marketing language. Each has real riding characteristics, cost tradeoffs, and a different relationship with road vibration and the repair bill.',
+  },
+  {
+    title: 'Fit basics',
+    desc: 'Most fit problems announce themselves as neck pain, hand numbness, or saddle discomfort. We will cover riding position fundamentals and how to know when a small adjustment fixes it.',
+  },
+  {
+    title: 'Drivetrain types',
+    desc: 'Road 2x, gravel 1x, and everything in between. Gear ratios explained in terms of what actually matters on a climb — or out of one.',
+  },
+  {
+    title: 'Drivetrain maintenance',
+    desc: 'When and how to clean your chain, what products to use, and why waxed chains outlast traditional lube by a significant margin.',
+  },
+  {
+    title: 'Tire talk',
+    desc: 'Counterintuitively, wider tires roll faster. We will cover contact patches, rolling resistance, and how to pick the right tire for your terrain.',
+  },
+  {
+    title: 'Adjustments and diagnosis',
+    desc: 'Mechanical and electronic. How to diagnose indexing issues, trim a brake, and recognize the difference between needs adjustment and needs a shop.',
+  },
+  {
+    title: 'Pre-ride checks',
+    desc: 'Two minutes before every ride. What to look for, what to feel for, and the three things that fail most often — before they fail on you.',
+  },
+]
+
+export default function Page() {
   return (
     <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
+      <MettleBackground />
+
+      {/* ── Hero ── */}
+      <section className={styles.hero}>
+        <div className={styles.maxWidth}>
+          <p className={styles.kicker}>Presented by Mettle Cycling</p>
+          <h1 className={styles.headline}>
+            <span className={styles.titleText}>Wrenching 101</span>
+            <span className={styles.titleShadowStrong} aria-hidden="true">Wrenching 101</span>
+            <span className={styles.titleShadowSoft} aria-hidden="true">Wrenching 101</span>
+          </h1>
+          <p className={styles.tagline}>
+            An intro for cyclists who ride confidently and wrench... less so.
           </p>
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* ── Intro + RSVP row ── */}
+      <section className={styles.introRsvpSection}>
+        <div className={styles.maxWidth}>
+          <div className={styles.introRsvpGrid}>
+
+            {/* Left: event intro */}
+            <div className={`${styles.card} ${styles.introCard}`}>
+              <p className={styles.cardHeading}>About the evening</p>
+              <p className={styles.introBody}>
+                One evening. Eight topics. The stuff you have wondered about but never prioritized.
+                We will cover the fundamentals of your bike — how it is built, how it wears,
+                how to keep it running — without assuming you have been in a shop before.
+              </p>
+              <div className={styles.eventMetaCard}>
+                <div className={styles.metaItem}>
+                  <span className={styles.metaItemLabel}>Date</span>
+                  <span className={styles.metaItemValue}>{EVENT_DATE}</span>
+                </div>
+                <div className={styles.metaItem}>
+                  <span className={styles.metaItemLabel}>Time</span>
+                  <span className={styles.metaItemValue}>{EVENT_TIME}</span>
+                </div>
+                <div className={styles.metaItem}>
+                  <span className={styles.metaItemLabel}>Location</span>
+                  <span className={styles.metaItemValue}>{EVENT_LOCATION}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Right: RSVP */}
+            <RSVPSection />
+
+          </div>
         </div>
-      </main>
+      </section>
+
+      {/* ── Agenda ── */}
+      <section className={styles.section}>
+        <div className={styles.maxWidth}>
+          <p className={styles.sectionKicker}>The evening</p>
+          <h2 className={styles.sectionHeading}>On the agenda</h2>
+          <div className={styles.agendaGrid}>
+            {AGENDA_ITEMS.map((item, i) => (
+              <article key={i} className={styles.agendaCard}>
+                <span className={styles.agendaNumber} aria-hidden="true">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <h3 className={styles.agendaTitle}>{item.title}</h3>
+                <p className={styles.agendaDesc}>{item.desc}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Bike anatomy diagram (placeholder) ── */}
+      <section className={styles.diagramSection}>
+        <div className={styles.maxWidth}>
+          <p className={styles.sectionKicker}>Bike anatomy</p>
+          <h2 className={styles.sectionHeading}>Interactive frame diagram</h2>
+          <div className={styles.diagramPlaceholder} role="img" aria-label="Interactive bike frame diagram, coming soon">
+            <p className={styles.diagramTag}>Coming soon</p>
+            <p className={styles.diagramTitle}>Frame geometry, labeled</p>
+            <p className={styles.diagramDesc}>
+              An interactive schematic of a road or gravel frame with toggleable labels
+              for every measurement. BB drop, head angle, stack, reach, chainstay, and more.
+              Built to make the numbers make sense.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Syllabus ── */}
+      <section className={styles.syllabusSection}>
+        <div className={styles.maxWidth}>
+          <div className={styles.syllabusRow}>
+            <p className={styles.syllabusLabel}>Take-home curriculum</p>
+            <button className={styles.syllabusBtn} disabled aria-disabled="true">
+              Syllabus coming soon
+            </button>
+          </div>
+        </div>
+      </section>
     </div>
-  );
+  )
 }
