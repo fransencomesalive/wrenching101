@@ -127,17 +127,23 @@ export default function Page() {
         </div>
       </section>
 
-      {/* ── Syllabus ── */}
-      <section className={styles.syllabusSection}>
+      {/* ── Footer ── */}
+      <footer className={styles.footerSection}>
         <div className={styles.maxWidth}>
-          <div className={styles.syllabusRow}>
-            <p className={styles.syllabusLabel}>Take-home curriculum</p>
-            <button className={styles.syllabusBtn} disabled aria-disabled="true">
-              Syllabus coming soon
-            </button>
+          <div className={styles.footerLinks}>
+            <a
+              href="https://www.mettlecycling.com"
+              className={styles.footerLink}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Mettle&nbsp;Cycling
+            </a>
+            <span className={styles.footerDot} aria-hidden="true">·</span>
+            <span className={styles.footerMuted}>Take-home curriculum — coming soon</span>
           </div>
         </div>
-      </section>
+      </footer>
     </div>
   )
 }
