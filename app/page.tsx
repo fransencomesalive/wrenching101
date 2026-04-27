@@ -140,7 +140,9 @@ export default function Page() {
               Mettle&nbsp;Cycling
             </a>
             <span className={styles.footerDot} aria-hidden="true">·</span>
-            <span className={styles.footerMuted}>Take-home curriculum — coming soon</span>
+            <span className={styles.footerMuted}>Take-home curriculum</span>
+            <span className={styles.footerDot} aria-hidden="true">·</span>
+            <span className={styles.footerMuted}>Syllabus coming soon</span>
           </div>
         </div>
       </footer>
