@@ -67,7 +67,26 @@ Wrenching 101 is a standalone Next.js microsite for `wrenching101.mettlecycling.
 - **Browser not reflecting dev server changes** — server is confirmed serving new content (verified via curl and headless screenshot). Browser shows stale version even after hard refresh and incognito. Tried: Cmd+Shift+R, incognito window. Not yet tried: network IP (192.168.86.183:3000), disabling cache via DevTools Network tab, or a different browser entirely. Root cause unknown — likely a service worker or aggressive browser cache on localhost.
 
 ## Resume Here
-Full CSS rewrite completed this session. New content and voice in place. Resolve the browser caching issue first — then do a visual review in the browser before any further design work. After that:
-1. Visual polish pass (verify card alignment, typography, spacing in browser)
-2. RSVP backend (persistence + email)
+Full CSS rewrite and content rewrite are committed and pushed. Dev server serves the correct new page (confirmed via curl and headless screenshot). Browser is showing a stale cached version — this must be resolved before any design review.
+
+### Step 1 — Fix the browser cache issue
+Try in order, stop when you see the new page (three cards: "The Plan", "Evening Agenda", "To Close the Night"):
+
+1. Access via network IP instead of localhost: `http://192.168.86.183:3000`
+2. Open DevTools (Cmd+Option+I) → Network tab → check "Disable cache" → refresh
+3. DevTools → Application → Service Workers → Unregister all → refresh
+4. Try a completely different browser (Firefox or Safari)
+5. If none of the above work: `rm -rf ~/Sites/wrenching101/.next` then restart dev server with `npm run dev`
+
+### Step 2 — Visual review
+Once the new page is visible:
+- Confirm three info cards have aligned header blocks (kicker + h2 bottom-align before body text)
+- Confirm agenda list numbers sit in their own column with wrapped lines indented to text start
+- Confirm "Attending" radio button shows teal selected state by default
+- Confirm no hyphenated text anywhere
+- Check mobile at 390px width
+
+### Step 3 — Continue
+1. Visual polish pass based on what the review reveals
+2. RSVP backend (persistence + email to randall@mettlecycling.com)
 3. Rive schematic integration
