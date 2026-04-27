@@ -557,9 +557,13 @@
     grid-template-columns: repeat(3, 1fr);
   }
 
+  .hero .maxWidth {
+    width: calc(100% - 16px);
+  }
+
   .headline {
-    white-space: normal;
-    font-size: clamp(32px, 10.5vw, 90px);
+    white-space: nowrap;
+    font-size: clamp(26px, 8.2vw, 90px);
   }
 
   .footerLinks {
