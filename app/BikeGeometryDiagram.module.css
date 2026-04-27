@@ -24,6 +24,14 @@
   pointer-events: none;
 }
 
+@media (max-width: 700px) {
+  .intro {
+    position: static;
+    max-width: none;
+    padding: 14px 16px 0;
+  }
+}
+
 /* ─── Diagram area + scan line ────────────────────────────────────────────── */
 
 .diagramArea {
