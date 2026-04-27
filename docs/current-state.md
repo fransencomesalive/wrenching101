@@ -52,7 +52,7 @@ Wrenching 101 is a standalone Next.js microsite for `wrenching101.mettlecycling.
 ## Validation Status
 - `npm run lint`: passes
 - `npm run build`: passes
-- Visual review: desktop and mobile screenshots taken and verified this session
+- Visual review: screenshots taken last session — design is still in progress, not signed off
 
 ## Open Work
 - Implement real RSVP persistence (database or serverless function)
@@ -62,10 +62,12 @@ Wrenching 101 is a standalone Next.js microsite for `wrenching101.mettlecycling.
 - Build first Rive schematic proof of concept
 - Add actual downloadable syllabus when ready
 - Add Lab26 external listing only when explicitly requested
-- No git repository initialized yet — needs `git init`, GitHub remote, and `.gitignore` before next session
+
+## Known Issues
+- **Browser not reflecting dev server changes** — server is confirmed serving new content (verified via curl and headless screenshot). Browser shows stale version even after hard refresh and incognito. Tried: Cmd+Shift+R, incognito window. Not yet tried: network IP (192.168.86.183:3000), disabling cache via DevTools Network tab, or a different browser entirely. Root cause unknown — likely a service worker or aggressive browser cache on localhost.
 
 ## Resume Here
-Layout and visual decisions are approved. Next work is either:
-1. RSVP backend (persistence + email)
-2. Rive schematic integration
-3. Initializing git and pushing to GitHub
+Full CSS rewrite completed this session. New content and voice in place. Resolve the browser caching issue first — then do a visual review in the browser before any further design work. After that:
+1. Visual polish pass (verify card alignment, typography, spacing in browser)
+2. RSVP backend (persistence + email)
+3. Rive schematic integration

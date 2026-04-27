@@ -21,9 +21,11 @@ This file is the gate for UI decisions. Do not make layout, type, color, or comp
 - Patheos is the major title font. Use it for `Wrenching 101` and keep it in the red color family.
 - New Athletic 54 is for section titles, labels, and compact headers. Use the yellow/amber color family.
 - Gotham is for body, form text, attendee names, metadata, and lists.
-- Body copy must default to at least 16px on desktop with a line-height near 1.5-1.6. Secondary metadata may be 13-14px only when it is not primary reading content.
+- Body copy must default to at least 16px at all breakpoints, including mobile. Line-height should be near 1.5-1.6. Do not reduce body copy below 16px to fit a layout — fix the layout instead.
+- Secondary metadata may be 13-14px only when it is not primary reading content, and only if it still passes WCAG 2.2 contrast at that size.
 - Body color is `#f8d29a` unless contrast testing against the actual background requires a stronger value.
 - Do not let large display text collide with other modules, overlap columns, or create accidental wraps. If a title must wrap, the line break must be intentional and balanced.
+- WCAG 2.2 is the accessibility floor, not the design ceiling. Creative judgment and taste are welcome above it, but text size and contrast rules are non-negotiable.
 
 ## Color Rules
 - The animated Mettle background is ambient and must not carry essential information.
@@ -38,6 +40,12 @@ This file is the gate for UI decisions. Do not make layout, type, color, or comp
 - RSVP grows vertically with the attendee list by default. Do not cap it until the list is long enough to harm page scanning; if capped later, use a clearly contained scroll area or disclosure.
 - Buttons and controls keep consistent text color unless an explicit state rule exists. Do not change attending/not-attending text color without defining selected, unselected, hover, and disabled states.
 - Do not create buttons, tags, or controls for future systems unless the current interaction exists or the element is explicitly marked as static content.
+
+## Text Composition Rules
+- No widows or orphans in paragraphs. Use `text-wrap: pretty` on all body copy and list items.
+- No hyphenated text in paragraphs. Set `hyphens: none` globally.
+- Numbered and bulleted lists must use hanging indent: `list-style-position: outside` with `padding-left` so wrapped lines align with the text start of the first line, not the number or bullet.
+- Parallel UI elements (card headers, section titles) must occupy consistent vertical space. Use `min-height` to equalize header blocks when content length varies across a row.
 
 ## Implementation Checklist
 - Before coding: name the rule that justifies the change.
