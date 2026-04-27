@@ -51,9 +51,9 @@ export default function Page() {
       <section className={styles.hero}>
         <div className={styles.maxWidth}>
           <h1 className={styles.headline}>
-            <span className={styles.titleText}>Wrenching&nbsp;101</span>
-            <span className={styles.titleShadowStrong} aria-hidden="true">Wrenching&nbsp;101</span>
-            <span className={styles.titleShadowSoft} aria-hidden="true">Wrenching&nbsp;101</span>
+            <span className={styles.titleText}>Wrenching 101</span>
+            <span className={styles.titleShadowStrong} aria-hidden="true">Wrenching 101</span>
+            <span className={styles.titleShadowSoft} aria-hidden="true">Wrenching 101</span>
           </h1>
           <p className={styles.tagline}>
             An intro for cyclists who ride confidently and wrench...{' '}

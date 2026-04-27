@@ -558,8 +558,8 @@
   }
 
   .headline {
-    white-space: nowrap;
-    font-size: clamp(18px, 7vw, 90px);
+    white-space: normal;
+    font-size: clamp(32px, 10.5vw, 90px);
   }
 
   .footerLinks {
