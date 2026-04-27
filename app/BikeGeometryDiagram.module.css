@@ -1,0 +1,114 @@
+/* ─── Wrapper ─────────────────────────────────────────────────────────────── */
+
+.wrapper {
+  background: rgba(0, 4, 8, 0.92);
+  border: 2px solid rgba(0, 170, 201, 0.18);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+/* ─── Intro label ─────────────────────────────────────────────────────────── */
+
+.intro {
+  position: absolute;
+  top: 16px;
+  left: 20px;
+  z-index: 10;
+  margin: 0;
+  max-width: 240px;
+  font-family: var(--w-body);
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.55;
+  color: var(--w-muted);
+  pointer-events: none;
+}
+
+/* ─── Diagram area + scan line ────────────────────────────────────────────── */
+
+.diagramArea {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Grid overlay */
+.diagramArea::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 170, 201, 0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 170, 201, 0.022) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Scan line */
+@keyframes scan {
+  0%   { transform: translateY(0);    opacity: 0; }
+  3%   { opacity: 0.7; }
+  97%  { opacity: 0.7; }
+  100% { transform: translateY(100%); opacity: 0; }
+}
+
+.diagramArea::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background: rgba(0, 167, 197, 0.3);
+  box-shadow: 0 0 6px 1px rgba(0, 167, 197, 0.35);
+  animation: scan 8s linear infinite;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ─── Description bar ─────────────────────────────────────────────────────── */
+
+.descBar {
+  padding: 14px 20px;
+  border-top: 1px solid rgba(0, 170, 201, 0.12);
+  min-height: 48px;
+}
+
+.descPlaceholder {
+  margin: 0;
+  font-family: var(--w-body);
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(248, 210, 154, 0.28);
+}
+
+.descList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.descItem {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.descLetter {
+  font-family: var(--w-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--w-amber);
+}
+
+.descText {
+  margin: 0;
+  font-family: var(--w-body);
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: rgba(248, 210, 154, 0.7);
+  text-wrap: pretty;
+}

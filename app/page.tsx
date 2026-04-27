@@ -1,5 +1,6 @@
 import MettleBackground from './MettleBackground'
 import RSVPSection from './RSVPSection'
+import BikeGeometryDiagram from './BikeGeometryDiagram'
 import styles from './page.module.css'
 
 const EVENT_DATE = 'May 12'
@@ -9,7 +10,7 @@ const EVENT_LOCATION = 'Location TBD'
 const AGENDA_ITEMS = [
   {
     title: 'Bike types and geometry',
-    desc: 'Road, gravel, and cyclocross bikes look similar until they don\'t. Frame geometry, wheel clearance, and intended use all shape how a bike rides — and which one fits your riding.',
+    desc: 'Road, gravel, and cyclocross bikes look similar until they don\'t. Frame geometry, wheel clearance, and intended use all shape how a bike rides — and which one is right for yours.',
   },
   {
     title: 'Frame materials',
@@ -49,14 +50,15 @@ export default function Page() {
       {/* ── Hero ── */}
       <section className={styles.hero}>
         <div className={styles.maxWidth}>
-          <p className={styles.kicker}>Presented by Mettle Cycling</p>
           <h1 className={styles.headline}>
             <span className={styles.titleText}>Wrenching 101</span>
             <span className={styles.titleShadowStrong} aria-hidden="true">Wrenching 101</span>
             <span className={styles.titleShadowSoft} aria-hidden="true">Wrenching 101</span>
           </h1>
           <p className={styles.tagline}>
-            An intro for cyclists who ride confidently and wrench... less so.
+            An intro for cyclists who ride confidently and wrench...{' '}
+            less&nbsp;so.{' '}
+            <span className={styles.taglinePresenter}>Presented&nbsp;by&nbsp;Mettle&nbsp;Cycling</span>
           </p>
         </div>
       </section>
@@ -116,20 +118,12 @@ export default function Page() {
         </div>
       </section>
 
-      {/* ── Bike anatomy diagram (placeholder) ── */}
+      {/* ── Bike anatomy diagram ── */}
       <section className={styles.diagramSection}>
         <div className={styles.maxWidth}>
           <p className={styles.sectionKicker}>Bike anatomy</p>
           <h2 className={styles.sectionHeading}>Interactive frame diagram</h2>
-          <div className={styles.diagramPlaceholder} role="img" aria-label="Interactive bike frame diagram, coming soon">
-            <p className={styles.diagramTag}>Coming soon</p>
-            <p className={styles.diagramTitle}>Frame geometry, labeled</p>
-            <p className={styles.diagramDesc}>
-              An interactive schematic of a road or gravel frame with toggleable labels
-              for every measurement. BB drop, head angle, stack, reach, chainstay, and more.
-              Built to make the numbers make sense.
-            </p>
-          </div>
+          <BikeGeometryDiagram />
         </div>
       </section>
 

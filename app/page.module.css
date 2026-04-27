@@ -35,7 +35,7 @@
 .hero {
   position: relative;
   z-index: 1;
-  padding-block: clamp(32px, 5vh, 52px) 16px;
+  padding-block: clamp(16px, 2vh, 24px) 16px;
 }
 
 .kicker {
@@ -97,6 +97,10 @@
   font-weight: 700;
   line-height: 1.15;
   color: var(--w-cream);
+}
+
+.taglinePresenter {
+  color: var(--w-amber);
 }
 
 /* ─── Intro + RSVP row ────────────────────────────────────────────────────── */
@@ -235,6 +239,7 @@
   font-weight: 300;
   line-height: 1.6;
   color: var(--w-muted);
+  text-wrap: pretty;
 }
 
 /* ─── Card shared ─────────────────────────────────────────────────────────── */
