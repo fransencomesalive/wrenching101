@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 // Required env vars:
-//   KV_REST_API_URL   — from Vercel KV store (vercel env pull after linking)
-//   KV_REST_API_TOKEN — from Vercel KV store
-//   RESEND_API_KEY    — from resend.com (domain noreply@mettlecycling.com must be verified)
+//   KV_REST_API_URL: from Vercel KV store (vercel env pull after linking)
+//   KV_REST_API_TOKEN: from Vercel KV store
+//   RESEND_API_KEY: from resend.com (domain noreply@mettlecycling.com must be verified)
 
 type RSVPEntry = {
   name: string
@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
     const kv = await getKv()
     await kv.rpush('wrenching101:rsvps', entry)
   } catch {
-    // KV not configured — continue to email
+    // KV not configured; continue to email
   }
 
   // Email notification via Resend
@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify({
         from: 'Wrenching 101 <noreply@mettlecycling.com>',
         to: ['randall@mettlecycling.com'],
-        subject: `Wrenching 101 RSVP — ${entry.name}: ${label}`,
+        subject: `Wrenching 101 RSVP: ${entry.name}, ${label}`,
         html: `<p><strong>${entry.name}</strong> responded: <strong>${label}</strong></p><p style="color:#666;font-size:13px;">Submitted ${new Date(entry.timestamp).toLocaleString()}</p>`,
       }),
     }).catch(() => { /* non-blocking */ })

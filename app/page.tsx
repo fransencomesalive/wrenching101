@@ -10,7 +10,7 @@ const EVENT_LOCATION = 'Location TBD'
 const AGENDA_ITEMS = [
   {
     title: 'Bike types and geometry',
-    desc: 'Road, gravel, and cyclocross bikes look similar until they don\'t. Frame geometry, wheel clearance, and intended use all shape how a bike rides — and which one is right for yours.',
+    desc: 'Road, gravel, and cyclocross bikes look similar until they don\'t. Frame geometry, wheel clearance, and intended use all shape how a bike rides, and which one is right for yours.',
   },
   {
     title: 'Frame materials',
@@ -22,7 +22,7 @@ const AGENDA_ITEMS = [
   },
   {
     title: 'Drivetrain types',
-    desc: 'Road 2x, gravel 1x, and everything in between. Gear ratios explained in terms of what actually matters on a climb — or out of one.',
+    desc: 'Road 2x, gravel 1x, and everything in between. Gear ratios explained in terms of what actually matters on a climb, or out of one.',
   },
   {
     title: 'Drivetrain maintenance',
@@ -38,7 +38,7 @@ const AGENDA_ITEMS = [
   },
   {
     title: 'Pre-ride checks',
-    desc: 'Two minutes before every ride. What to look for, what to feel for, and the three things that fail most often — before they fail on you.',
+    desc: 'Two minutes before every ride. What to look for, what to feel for, and the three things that fail most often before they fail on you.',
   },
 ]
 
@@ -73,8 +73,8 @@ export default function Page() {
               <p className={styles.cardHeading}>About the evening</p>
               <p className={styles.introBody}>
                 One evening. Eight topics. The stuff you have wondered about but never prioritized.
-                We will cover the fundamentals of your bike — how it is built, how it wears,
-                how to keep it running — without assuming you have been in a shop before.
+                We will cover the fundamentals of your bike (how it is built, how it wears,
+                and how to keep it running) without assuming you have been in a shop before.
               </p>
               <div className={styles.eventMetaCard}>
                 <div className={styles.metaItem}>

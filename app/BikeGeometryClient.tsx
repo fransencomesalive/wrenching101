@@ -9,13 +9,13 @@ const PARTS: Record<string, { letter: string; dim?: string; dotted?: string[]; d
   Reach:       { letter: 'B', dim: 'Reach-dim',       dotted: ['Stack-dim', 'effectiveTT-dim'],                      desc: 'Reach is the horizontal distance from the center of the bottom bracket to the top of the head tube. More reach means a longer, more stretched-out position.' },
   ForkOffest:  { letter: 'C', dotted: ['forkoffset-dotted', 'HTangle-dotted'],                                        desc: 'Fork rake (offset) is the perpendicular distance between the front axle and the steering axis. It directly affects trail and, in turn, how the bike handles at speed.' },
   Trail:       { letter: 'D', dim: 'Trail-dim',       dotted: ['wheelbase2-dotted', 'HTangle-dotted'],                desc: 'Trail is the horizontal distance between where the steering axis hits the ground and where the front axle projects to the ground. More trail means more self-correction and stability; less trail means lighter, quicker steering.' },
-  STangle:     { letter: 'F', dim: 'seattubeangle',   dotted: ['seattube-dotted', 'wheelbase-dotted'],                desc: 'Seat tube angle is measured from horizontal. A steeper angle (more vertical) shifts your weight forward over the pedals — common on climbing and TT bikes.' },
+  STangle:     { letter: 'F', dim: 'seattubeangle',   dotted: ['seattube-dotted', 'wheelbase-dotted'],                desc: 'Seat tube angle is measured from horizontal. A steeper angle (more vertical) shifts your weight forward over the pedals, common on climbing and TT bikes.' },
   HTangle:     { letter: 'H', dim: 'HTangle-dim',     dotted: ['HTangle-dotted', 'wheelbase-dotted'],                 desc: 'Head tube angle is measured from horizontal. A slacker angle (lower number) gives more stable, slower steering. A steeper angle makes the steering quicker and more responsive.' },
   HTLength:    { letter: 'G', dim: 'HTlength-dim',                                                                    desc: 'Head tube length determines how much stack height comes from the frame itself versus from spacers and stem rise. Longer head tubes suit more upright riders.' },
   EffTT:       { letter: 'I', dim: 'effectiveTT-dim', dotted: ['EffTT-dotted'],                                       desc: 'Effective top tube is the horizontal distance between the seat tube centerline and the head tube centerline, measured at saddle height. It reflects the frame\'s reach independent of seat tube angle.' },
   Chainstay:   { letter: 'J', dim: 'Chainstay-dim',                                                                   desc: 'Chainstay length runs from the bottom bracket center to the rear axle center. Shorter chainstays make a bike feel snappier and more responsive. Longer stays improve stability and heel clearance.' },
   Wheelbase:   { letter: 'K', dim: 'Wheelbase-dim',   dotted: ['wheelbase-dotted', 'wheelbase1-dotted', 'wheelbase2-dotted'], desc: 'Wheelbase is the axle-to-axle distance. Longer wheelbase means more stability at speed and over rough terrain. Shorter wheelbase makes the bike more agile and snappy.' },
-  BBdrop:      { letter: 'L', dim: 'BBdrop-dim',      dotted: ['wheelbase-dotted'],                                   desc: 'Bottom bracket drop is how far the BB center sits below the wheel axle centerline. More drop lowers your center of gravity for stability; less drop gives more ground clearance — important on rough terrain.' },
+  BBdrop:      { letter: 'L', dim: 'BBdrop-dim',      dotted: ['wheelbase-dotted'],                                   desc: 'Bottom bracket drop is how far the BB center sits below the wheel axle centerline. More drop lowers your center of gravity for stability; less drop gives more ground clearance, which matters on rough terrain.' },
   FrontCenter: { letter: 'N', dim: 'FrontCenter-dim',                                                                 desc: 'Front centre is the horizontal distance from the bottom bracket to the front axle. It affects weight distribution and toe overlap on frames with short chainstays.' },
 }
 
@@ -66,7 +66,7 @@ export default function BikeGeometryClient({ svgMarkup }: { svgMarkup: string })
     })
   }, [svgMarkup])
 
-  // ── Handle clicks via React synthetic event — no native addEventListener ─────
+  // ── Handle clicks via React synthetic event, not native addEventListener ─────
   // Functional updater guarantees prev is current state regardless of closures.
   function handleClick(e: React.MouseEvent<HTMLDivElement>) {
     const target = e.target as Node
@@ -101,7 +101,7 @@ export default function BikeGeometryClient({ svgMarkup }: { svgMarkup: string })
     })
 
     // Collect which layer IDs are referenced by any currently-active part.
-    // A layer may appear in multiple parts' dotted arrays — process active parts
+    // A layer may appear in multiple parts' dotted arrays; process active parts
     // first so a shared layer is never reset by an inactive part iterating after.
     const dimActive   = new Set<string>()
     const dottedActive = new Set<string>()
