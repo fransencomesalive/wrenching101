@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { put, get } from '@vercel/blob'
 
-// Required env vars:
-//   BLOB_READ_WRITE_TOKEN: from Vercel Blob store (set automatically when store is linked)
-//   RESEND_API_KEY: from resend.com (domain noreply@mettlecycling.com must be verified)
+// Required env var:
+//   BLOB_READ_WRITE_TOKEN: set automatically when the Vercel Blob store is linked
 
 type RSVPEntry = {
   name: string
@@ -62,25 +61,6 @@ export async function POST(req: NextRequest) {
 
   const current = await readRsvps()
   await writeRsvps([...current, entry])
-
-  // Email notification via Resend
-  const apiKey = process.env.RESEND_API_KEY
-  if (apiKey) {
-    const label = entry.status === 'going' ? 'Going' : 'Not going'
-    await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        from: 'Wrenching 101 <noreply@mettlecycling.com>',
-        to: ['randall@mettlecycling.com'],
-        subject: `Wrenching 101 RSVP: ${entry.name}, ${label}`,
-        html: `<p><strong>${entry.name}</strong> responded: <strong>${label}</strong></p><p style="color:#666;font-size:13px;">Submitted ${new Date(entry.timestamp).toLocaleString()}</p>`,
-      }),
-    }).catch(() => { /* non-blocking */ })
-  }
 
   return NextResponse.json({ ok: true })
 }

@@ -43,6 +43,10 @@ export default function RSVPSection() {
         body: JSON.stringify({ name: name.trim(), status }),
       })
       if (!res.ok) throw new Error()
+      const label = status === 'going' ? 'Going' : 'Not going'
+      const subject = encodeURIComponent(`Wrenching 101 RSVP: ${name.trim()}, ${label}`)
+      const emailBody = encodeURIComponent(`${name.trim()} — ${label}`)
+      window.open(`mailto:randall@mettlecycling.com?subject=${subject}&body=${emailBody}`)
       setSubmitted(true)
       await fetchRsvps()
     } catch {
