@@ -86,6 +86,7 @@ export default function BikeGeometryClient({ svgMarkup }: { svgMarkup: string })
     const GAP   = 24 // SVG user-unit minimum gap between scaled column edges
 
     function applyMobileScale() {
+      if (!root) return
       // Guard on rendered SVG width — reliable across devices and DevTools
       const svgEl = root.querySelector('svg')
       const svgWidth = svgEl?.getBoundingClientRect().width ?? 0
@@ -121,6 +122,7 @@ export default function BikeGeometryClient({ svgMarkup }: { svgMarkup: string })
     applyMobileScale()
 
     const onResize = () => {
+      if (!root) return
       Object.keys(PARTS).forEach(part => {
         const btn = root.querySelector(`[id="${part}-button"]`) as SVGGraphicsElement | null
         if (btn) btn.removeAttribute('transform')
