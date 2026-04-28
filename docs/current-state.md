@@ -1,20 +1,20 @@
 # Current State — Wrenching 101
 
 ## Status
-Page is live at `wrenching101.mettlecycling.com`. Mobile layout has been audited and corrected. RSVP backend (Vercel KV + Resend) is still not set up — frontend and API route are complete and waiting on infrastructure.
+Page is live at `wrenching101.mettlecycling.com`. RSVP backend live (Vercel Blob + silent submit, no email client prompt). Submit button is currently enabled with test data in the blob. Before sending invites: reset blob data and disable submit button until date is confirmed.
 
 ## Stack
 - Next.js App Router, TypeScript strict, CSS Modules
 - Local: `http://localhost:3000`
 - Production: `wrenching101.mettlecycling.com` (Vercel project: `wrenching101` under `fransencomesalive-4748s-projects`)
 - Repo: `https://github.com/fransencomesalive/wrenching101.git`
-- Packages: `resend`, `@vercel/kv`
+- Packages: `@vercel/blob`
 
 ## Fonts
 Licensed fonts ARE committed to git. No manual copy needed on new machines.
 
 ## Page structure
-1. **Hero** — Patheos/red headline, New Athletic 54 tagline
+1. **Hero** — Patheos/red headline (full-width fill), New Athletic 54 tagline
 2. **Intro + RSVP row** — 2-column card grid, stacks to 1-column on mobile
 3. **Agenda** — 8 topic cards in 2-column grid, stacks to 1-column on mobile
 4. **Bike frame diagram** — interactive SVG with click-to-reveal measurements
@@ -25,14 +25,19 @@ Licensed fonts ARE committed to git. No manual copy needed on new machines.
 - Cards: `rgba(0, 12, 18, 0.85)` panel, `2px solid rgba(0, 170, 201, 0.38)` teal border
 - Drop shadow on headline only, never in cards
 - Tagline uses New Athletic 54, not Gotham
-- Attendee grid: fixed 16-slot 2-column pre-allocated layout
+- Attendee grid: two-column layout, ATTENDING / NOT ATTENDING headers in cream display font
+- Attendee names: 13px, weight 700, `var(--w-muted)` color
 - No em dashes anywhere in copy, ever
 
-## Mobile layout (audited this session)
-- Headline: `white-space: nowrap`, `clamp(26px, 8.2vw, 90px)`, hero container uses `calc(100% - 16px)` on mobile to give headline more horizontal room while keeping the rest of the page at standard padding
-- Headline font width was measured with fonttools: "Wrenching 101" in Patheos = 11.243em. 8.2vw fits single-line with safe margin at 320/375/390px.
-- Diagram intro text: `position: static` on mobile (was absolute, overlapped the SVG)
+## Headline (full-width fill)
+- Formula: `clamp(58px, calc(8.894vw - 4.27px), 105px)` desktop / `calc(8.894vw - 1.42px)` mobile
+- Derived from measured font advance: "Wrenching 101" in Patheos = 11.243em
+- Fills `maxWidth` container exactly at all breakpoints (verified 320px–1440px)
+- Hero container on mobile: `calc(100% - 16px)`; all other sections: `min(1180px, calc(100% - 48px))`
+
+## Mobile layout
 - All grids collapse to 1-column at 700px
+- Diagram intro text: `position: static` on mobile
 
 ## Frame diagram
 ### Architecture
@@ -62,11 +67,20 @@ Licensed fonts ARE committed to git. No manual copy needed on new machines.
 Storage: Vercel Blob private store (`wrenching101-rsvps`, `store_1PpvAB2cFZVg5Y8O`).
 `BLOB_READ_WRITE_TOKEN` set in Vercel env vars (all environments). Local `.env.local` pulled via `vercel env pull`.
 
-Email notification: `mailto:` link opened client-side after successful POST, same pattern as Flanders26. No Resend, no API key needed. Pre-fills subject and body with name + status.
+Email notification: none (no Resend, no mailto). Form submits silently; attendee list updates live on the page.
 
 - `app/api/rsvp/route.ts` — GET reads blob, POST appends entry and writes blob back
-- `app/RSVPSection.tsx` — opens `mailto:randall@mettlecycling.com` after successful POST
+- `app/RSVPSection.tsx` — ATTENDING / NOT ATTENDING two-column layout; submit is currently enabled
+
+### To reset blob data (run from wrenching101 dir):
+```js
+// seed_tmp.mjs
+import { put } from '@vercel/blob';
+await put('rsvps.json', '[]', { access: 'private', addRandomSuffix: false, allowOverwrite: true, contentType: 'application/json', token: 'BLOB_READ_WRITE_TOKEN_VALUE' });
+```
 
 ## Resume here (next session)
-1. Review diagram dotted line behavior (user flagged for review)
-2. Any remaining mobile or polish issues
+1. Reset blob to `[]` and disable submit button before invites go out
+2. Re-enable submit button once date is confirmed and invites are ready (see memory reminder)
+3. Review diagram dotted line behavior (flagged for review, deferred)
+4. Any remaining polish issues
