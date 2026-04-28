@@ -132,9 +132,21 @@
   margin: 10px auto 0;
   border-collapse: collapse;
   table-layout: fixed;
-  width: 390px;
+  max-width: 390px;
+  width: 100%;
   font-family: var(--w-body);
   font-size: 12px;
+}
+
+@media (max-width: 440px) {
+  .geoTable {
+    font-size: 10px;
+  }
+
+  .geoTable th,
+  .geoTable td {
+    padding: 7px 4px;
+  }
 }
 
 .geoTable th,
