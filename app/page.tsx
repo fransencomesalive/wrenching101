@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import MettleBackground from './MettleBackground'
 import RSVPSection from './RSVPSection'
 import BikeGeometryDiagram from './BikeGeometryDiagram'
@@ -8,14 +9,14 @@ const EVENT_TIME = 'Time TBD'
 const EVENT_LOCATION = 'High Haus'
 const EVENT_LOCATION_URL = 'https://share.google/t5MrtQPmXCXskQrtN'
 
-const AGENDA_ITEMS = [
+const AGENDA_ITEMS: Array<{ title: string; desc: ReactNode }> = [
   {
     title: 'Bike types and geometry',
-    desc: 'Road, gravel, and cyclocross bikes look similar until they don\'t. Frame geometry, wheel clearance, and intended use all shape how a bike rides, and which one is right for yours.',
+    desc: "Road, gravel, and cyclocross bikes look similar until they don't. Frame geometry, wheel clearance, and intended use all shape how a bike rides, and which bike is right for your ride.",
   },
   {
     title: 'Frame materials',
-    desc: 'Carbon, steel, and aluminum aren\'t just marketing language. Each has real riding characteristics, cost tradeoffs, and a different relationship with road vibration and the repair bill.',
+    desc: "Carbon, steel, and aluminum. They do the same thing but do it differently. Each has real riding characteristics, cost tradeoffs, and a different relationship with road vibration and the repair bill.",
   },
   {
     title: 'Fit basics',
@@ -23,7 +24,7 @@ const AGENDA_ITEMS = [
   },
   {
     title: 'Drivetrain types',
-    desc: 'Road 2x, gravel 1x, and everything in between. Gear ratios explained in terms of what actually matters on a climb, or out of one.',
+    desc: "Road 2x, gravel 1x, and wtf is a Campagnolo. Gear ratios explained and some general HALP! on the whole complicated system.",
   },
   {
     title: 'Drivetrain maintenance',
@@ -31,11 +32,11 @@ const AGENDA_ITEMS = [
   },
   {
     title: 'Tire talk',
-    desc: 'Counterintuitively, wider tires roll faster. We will cover contact patches, rolling resistance, and how to pick the right tire for your terrain.',
+    desc: "What pressure you running' bro? Probably higher than you need, bro. We will cover contact patches, rolling resistance, and how to pick the right tire for your terrain.",
   },
   {
     title: 'Adjustments and diagnosis',
-    desc: 'Mechanical and electronic. How to diagnose indexing issues, trim a brake, and recognize the difference between needs adjustment and needs a shop.',
+    desc: <>Mechanical and electronic. How to diagnose indexing issues, correct disk brake rub, and recognize the difference between <em>needs adjustment</em> and <em>needs a shop</em>.</>,
   },
   {
     title: 'Pre-ride checks',
