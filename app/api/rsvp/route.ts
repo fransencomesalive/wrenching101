@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { put, get } from '@vercel/blob'
 
 // Required env vars:
-//   KV_REST_API_URL: from Vercel KV store (vercel env pull after linking)
-//   KV_REST_API_TOKEN: from Vercel KV store
+//   BLOB_READ_WRITE_TOKEN: from Vercel Blob store (set automatically when store is linked)
 //   RESEND_API_KEY: from resend.com (domain noreply@mettlecycling.com must be verified)
 
 type RSVPEntry = {
@@ -11,19 +11,36 @@ type RSVPEntry = {
   timestamp: number
 }
 
-async function getKv() {
-  const { kv } = await import('@vercel/kv')
-  return kv
+const BLOB_PATH = 'rsvps.json'
+
+async function readRsvps(): Promise<RSVPEntry[]> {
+  try {
+    const result = await get(BLOB_PATH, {
+      access: 'private',
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+      useCache: false,
+    })
+    if (!result) return []
+    const text = await new Response(result.stream).text()
+    return JSON.parse(text)
+  } catch {
+    return []
+  }
+}
+
+async function writeRsvps(entries: RSVPEntry[]): Promise<void> {
+  await put(BLOB_PATH, JSON.stringify(entries), {
+    access: 'private',
+    addRandomSuffix: false,
+    allowOverwrite: true,
+    contentType: 'application/json',
+    token: process.env.BLOB_READ_WRITE_TOKEN,
+  })
 }
 
 export async function GET() {
-  try {
-    const kv = await getKv()
-    const rsvps = await kv.lrange<RSVPEntry>('wrenching101:rsvps', 0, -1)
-    return NextResponse.json(rsvps ?? [])
-  } catch {
-    return NextResponse.json([])
-  }
+  const rsvps = await readRsvps()
+  return NextResponse.json(rsvps)
 }
 
 export async function POST(req: NextRequest) {
@@ -43,13 +60,8 @@ export async function POST(req: NextRequest) {
     timestamp: Date.now(),
   }
 
-  // Persist to KV
-  try {
-    const kv = await getKv()
-    await kv.rpush('wrenching101:rsvps', entry)
-  } catch {
-    // KV not configured; continue to email
-  }
+  const current = await readRsvps()
+  await writeRsvps([...current, entry])
 
   // Email notification via Resend
   const apiKey = process.env.RESEND_API_KEY
