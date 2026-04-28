@@ -50,6 +50,19 @@ Licensed fonts ARE committed to git. No manual copy needed on new machines.
 - Active labels dim inactive ones to 0.3 opacity
 - Toggle: click active label again to deactivate
 - Desc bar at bottom shows letter + description for each active measurement
+- Below each description: a 2-row × 3-col Road/Gravel/Cyclocross comparison table (teal-bordered grid, `var(--w-muted)` text, headers 15% larger than values)
+
+### Comparison table
+- Data from `docs/frame-geometry-research.md` (Codex handoff)
+- Fixed `max-width: 390px; width: 100%` — desktop centers at 390px, mobile shrinks to fit
+- Below 440px: font drops to 10px, padding reduces to 7px/4px
+- All 12 measurements have table data
+
+### Mobile label scaling
+- SCALE = 1.32 (1.15 baseline × 1.15)
+- 4 label columns evenly distributed across full SVG width (MARGIN=40, gap calculated dynamically)
+- Rows within each column spread by ROW_EXTRA_SPACE=20 SVG units (middle row anchored, top/bottom offset ±20)
+- Breakpoint: svgWidth > 800 skips mobile transforms
 
 ### Effects
 - `#Bike_Frame` pulses with teal glow animation
@@ -81,6 +94,5 @@ await put('rsvps.json', '[]', { access: 'private', addRandomSuffix: false, allow
 ## Resume here (next session)
 1. Reset blob to `[]` and disable submit button before invites go out
 2. Re-enable submit button once date is confirmed and invites are ready (see memory reminder)
-3. **Diagram mobile button scaling — UNRESOLVED.** Goal: make the SVG button labels in the frame diagram legible on mobile. Attempted CSS `transform: scale(1.35)` and JS-based column spacing using `getBBox()` and hardcoded SVG bounds — neither produced a visible improvement. The buttons appear unchanged at all tested scales. Root cause not confirmed: likely either (a) `svgWidth > 800` guard is still bailing early, or (b) the SVG `transform` attribute is being ignored due to an existing transform on a parent group. Next step: inspect the button `<g>` elements in browser devtools on mobile to confirm whether the `transform` attribute is being applied, then adjust from there.
-4. Review diagram dotted line behavior (flagged for review, deferred)
-5. Any remaining polish issues
+3. Review diagram dotted line behavior (flagged for review, deferred)
+4. Any remaining polish issues on the diagram (mobile label layout improved but may need further tuning after live review)
