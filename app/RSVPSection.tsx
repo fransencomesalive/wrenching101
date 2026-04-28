@@ -113,9 +113,9 @@ export default function RSVPSection() {
           <button
             type="submit"
             className={styles.submitBtn}
-            disabled={loading}
+            disabled
           >
-            {loading ? 'Sending' : 'Send response'}
+            Send response
           </button>
         </form>
       )}

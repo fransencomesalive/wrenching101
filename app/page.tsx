@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import MettleBackground from './MettleBackground'
 import RSVPSection from './RSVPSection'
 import BikeGeometryDiagram from './BikeGeometryDiagram'
+import HeadlineAutosize from './HeadlineAutosize'
 import styles from './page.module.css'
 
 const EVENT_DATE = 'May 12'
@@ -52,11 +53,7 @@ export default function Page() {
       {/* ── Hero ── */}
       <section className={styles.hero}>
         <div className={styles.maxWidth}>
-          <h1 className={styles.headline}>
-            <span className={styles.titleText}>Wrenching 101</span>
-            <span className={styles.titleShadowStrong} aria-hidden="true">Wrenching 101</span>
-            <span className={styles.titleShadowSoft} aria-hidden="true">Wrenching 101</span>
-          </h1>
+          <HeadlineAutosize />
           <p className={styles.tagline}>
             An intro for cyclists who ride confidently and wrench...{' '}
             less&nbsp;so.{' '}
@@ -144,8 +141,7 @@ export default function Page() {
       {/* ── Bike anatomy diagram ── */}
       <section className={styles.diagramSection}>
         <div className={styles.maxWidth}>
-          <p className={styles.sectionKicker}>Bike anatomy</p>
-          <h2 className={styles.sectionHeading}>Interactive frame diagram</h2>
+          <h2 className={styles.sectionHeading}>Bike Geometry</h2>
           <BikeGeometryDiagram />
         </div>
       </section>

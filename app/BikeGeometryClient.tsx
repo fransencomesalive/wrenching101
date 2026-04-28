@@ -46,24 +46,88 @@ export default function BikeGeometryClient({ svgMarkup }: { svgMarkup: string })
       if (el) el.style.opacity = '0'
     })
 
+    // Measure bboxes BEFORE adding hitRects so hitRect padding doesn't skew them
+    const bboxes: Record<string, DOMRect> = {}
     Object.keys(PARTS).forEach(part => {
       const btn = root.querySelector(`[id="${part}-button"]`) as SVGGraphicsElement | null
       if (!btn) return
       btn.style.cursor = 'pointer'
-      // Transparent bbox rect ensures the full label area is clickable
-      try {
-        const bb = btn.getBBox()
-        const pad = 6
-        const hitRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-        hitRect.setAttribute('x',      String(bb.x - pad))
-        hitRect.setAttribute('y',      String(bb.y - pad))
-        hitRect.setAttribute('width',  String(bb.width  + pad * 2))
-        hitRect.setAttribute('height', String(bb.height + pad * 2))
-        hitRect.setAttribute('fill', 'transparent')
-        hitRect.setAttribute('pointer-events', 'all')
-        btn.appendChild(hitRect)
-      } catch (_) { /* getBBox unavailable in rare render contexts */ }
+      try { bboxes[part] = btn.getBBox() } catch (_) {}
     })
+
+    // Add hitRects after measuring
+    Object.keys(PARTS).forEach(part => {
+      const btn = root.querySelector(`[id="${part}-button"]`) as SVGGraphicsElement | null
+      const bb = bboxes[part]
+      if (!btn || !bb) return
+      const pad = 6
+      const hitRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+      hitRect.setAttribute('x',      String(bb.x - pad))
+      hitRect.setAttribute('y',      String(bb.y - pad))
+      hitRect.setAttribute('width',  String(bb.width  + pad * 2))
+      hitRect.setAttribute('height', String(bb.height + pad * 2))
+      hitRect.setAttribute('fill', 'transparent')
+      hitRect.setAttribute('pointer-events', 'all')
+      btn.appendChild(hitRect)
+    })
+
+    // ── Mobile column scaling with gap enforcement ────────────────────────────
+    // getBBox on these groups returns inflated bounds due to invisible paths,
+    // so we use measured SVG x positions and label right-edges directly.
+    // All values are in SVG user units (viewBox 0 0 1180 800).
+    const COLUMNS: Array<{ parts: string[]; x: number; right: number }> = [
+      { parts: ['Stack', 'Reach', 'Trail'],              x: 148, right: 235  },
+      { parts: ['ForkOffest', 'FrontCenter', 'Wheelbase'], x: 316, right: 462  },
+      { parts: ['STangle', 'HTangle', 'Chainstay'],      x: 529, right: 719  },
+      { parts: ['EffTT', 'HTLength', 'BBdrop'],          x: 766, right: 1035 },
+    ]
+    const SCALE = 1.35
+    const GAP   = 24 // SVG user-unit minimum gap between scaled column edges
+
+    function applyMobileScale() {
+      // Guard on rendered SVG width — reliable across devices and DevTools
+      const svgEl = root.querySelector('svg')
+      const svgWidth = svgEl?.getBoundingClientRect().width ?? 0
+      if (svgWidth > 800) return
+
+      let prevRightEdge = -Infinity
+
+      COLUMNS.forEach(({ parts, x, right }) => {
+        const cx    = (x + right) / 2
+        const halfW = (right - x) / 2
+        const scaledLeft  = cx - halfW * SCALE
+        const scaledRight = cx + halfW * SCALE
+
+        const shift = prevRightEdge > scaledLeft
+          ? prevRightEdge + GAP - scaledLeft
+          : 0
+
+        parts.forEach(part => {
+          const btn = root.querySelector(`[id="${part}-button"]`) as SVGGraphicsElement | null
+          const bb  = bboxes[part]
+          if (!btn || !bb) return
+          const bcx = bb.x + bb.width  / 2
+          const bcy = bb.y + bb.height / 2
+          btn.setAttribute('transform',
+            `translate(${shift},0) translate(${bcx},${bcy}) scale(${SCALE}) translate(${-bcx},${-bcy})`
+          )
+        })
+
+        prevRightEdge = scaledRight + shift
+      })
+    }
+
+    applyMobileScale()
+
+    const onResize = () => {
+      Object.keys(PARTS).forEach(part => {
+        const btn = root.querySelector(`[id="${part}-button"]`) as SVGGraphicsElement | null
+        if (btn) btn.removeAttribute('transform')
+      })
+      applyMobileScale()
+    }
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
   }, [svgMarkup])
 
   // ── Handle clicks via React synthetic event, not native addEventListener ─────

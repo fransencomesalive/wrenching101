@@ -30,10 +30,9 @@ Licensed fonts ARE committed to git. No manual copy needed on new machines.
 - No em dashes anywhere in copy, ever
 
 ## Headline (full-width fill)
-- Formula: `clamp(58px, calc(8.894vw - 4.27px), 105px)` desktop / `calc(8.894vw - 1.42px)` mobile
-- Derived from measured font advance: "Wrenching 101" in Patheos = 11.243em
-- Fills `maxWidth` container exactly at all breakpoints (verified 320px–1440px)
-- Hero container on mobile: `calc(100% - 16px)`; all other sections: `min(1180px, calc(100% - 48px))`
+- Sized via `HeadlineAutosize.tsx` — client component that measures actual rendered text width and sets font-size to fill the maxWidth container exactly
+- CSS fallback: `clamp(58px, calc(8.894vw - 4.27px), 105px)` (corrected before JS hydrates)
+- Hero container uses same `min(1180px, calc(100% - 48px))` as all other sections on all breakpoints
 
 ## Mobile layout
 - All grids collapse to 1-column at 700px
@@ -82,5 +81,6 @@ await put('rsvps.json', '[]', { access: 'private', addRandomSuffix: false, allow
 ## Resume here (next session)
 1. Reset blob to `[]` and disable submit button before invites go out
 2. Re-enable submit button once date is confirmed and invites are ready (see memory reminder)
-3. Review diagram dotted line behavior (flagged for review, deferred)
-4. Any remaining polish issues
+3. **Diagram mobile button scaling — UNRESOLVED.** Goal: make the SVG button labels in the frame diagram legible on mobile. Attempted CSS `transform: scale(1.35)` and JS-based column spacing using `getBBox()` and hardcoded SVG bounds — neither produced a visible improvement. The buttons appear unchanged at all tested scales. Root cause not confirmed: likely either (a) `svgWidth > 800` guard is still bailing early, or (b) the SVG `transform` attribute is being ignored due to an existing transform on a parent group. Next step: inspect the button `<g>` elements in browser devtools on mobile to confirm whether the `transform` attribute is being applied, then adjust from there.
+4. Review diagram dotted line behavior (flagged for review, deferred)
+5. Any remaining polish issues
