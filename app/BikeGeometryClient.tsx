@@ -82,27 +82,28 @@ export default function BikeGeometryClient({ svgMarkup }: { svgMarkup: string })
       { parts: ['STangle', 'HTangle', 'Chainstay'],      x: 529, right: 719  },
       { parts: ['EffTT', 'HTLength', 'BBdrop'],          x: 766, right: 1035 },
     ]
-    const SCALE = 1.35
-    const GAP   = 24 // SVG user-unit minimum gap between scaled column edges
+    const SCALE = 1.15
+    const SVG_W  = 1180
 
     function applyMobileScale() {
       if (!root) return
-      // Guard on rendered SVG width — reliable across devices and DevTools
       const svgEl = root.querySelector('svg')
       const svgWidth = svgEl?.getBoundingClientRect().width ?? 0
       if (svgWidth > 800) return
 
-      let prevRightEdge = -Infinity
+      // Distribute columns evenly across the full SVG width so all horizontal
+      // space is used rather than leaving columns bunched on the left.
+      const MARGIN      = 40
+      const available   = SVG_W - 2 * MARGIN
+      const totalScaled = COLUMNS.reduce((sum, { x, right }) => sum + (right - x) * SCALE, 0)
+      const gap         = (available - totalScaled) / (COLUMNS.length - 1)
 
+      let cursor = MARGIN
       COLUMNS.forEach(({ parts, x, right }) => {
-        const cx    = (x + right) / 2
-        const halfW = (right - x) / 2
-        const scaledLeft  = cx - halfW * SCALE
-        const scaledRight = cx + halfW * SCALE
-
-        const shift = prevRightEdge > scaledLeft
-          ? prevRightEdge + GAP - scaledLeft
-          : 0
+        const halfW    = (right - x) / 2 * SCALE
+        const targetCx = cursor + halfW
+        const shift    = targetCx - (x + right) / 2
+        cursor         = targetCx + halfW + gap
 
         parts.forEach(part => {
           const btn = root.querySelector(`[id="${part}-button"]`) as SVGGraphicsElement | null
@@ -114,8 +115,6 @@ export default function BikeGeometryClient({ svgMarkup }: { svgMarkup: string })
             `translate(${shift},0) translate(${bcx},${bcy}) scale(${SCALE}) translate(${-bcx},${-bcy})`
           )
         })
-
-        prevRightEdge = scaledRight + shift
       })
     }
 
