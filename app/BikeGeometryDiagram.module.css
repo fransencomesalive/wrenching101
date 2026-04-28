@@ -120,3 +120,39 @@
   color: rgba(248, 210, 154, 0.7);
   text-wrap: pretty;
 }
+
+/* ─── Geometry comparison table ───────────────────────────────────────────── */
+
+.descGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.geoTable {
+  margin: 10px auto 0;
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 390px;
+  font-family: var(--w-body);
+  font-size: 12px;
+}
+
+.geoTable th,
+.geoTable td {
+  border: 2px solid var(--w-teal-border);
+  text-align: center;
+  vertical-align: middle;
+  color: var(--w-muted);
+  padding: 9px 8px;
+}
+
+.geoTable th {
+  font-size: 1.15em;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.geoTable td {
+  font-weight: 300;
+}

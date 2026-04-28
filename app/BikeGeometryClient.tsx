@@ -4,19 +4,20 @@ import { useState, useEffect, useRef } from 'react'
 import styles from './BikeGeometryDiagram.module.css'
 
 // ── Measurement map ────────────────────────────────────────────────────────────
-const PARTS: Record<string, { letter: string; dim?: string; dotted?: string[]; desc: string }> = {
-  Stack:       { letter: 'A', dim: 'Stack-dim',       dotted: ['BBdrop-dim', 'EffTT-dotted'],                        desc: 'Stack is the vertical height from the center of the bottom bracket up to the top of the head tube. A higher stack puts you in a more upright position.' },
-  Reach:       { letter: 'B', dim: 'Reach-dim',       dotted: ['Stack-dim', 'effectiveTT-dim'],                      desc: 'Reach is the horizontal distance from the center of the bottom bracket to the top of the head tube. More reach means a longer, more stretched-out position.' },
-  ForkOffest:  { letter: 'C', dotted: ['forkoffset-dotted', 'HTangle-dotted'],                                        desc: 'Fork rake (offset) is the perpendicular distance between the front axle and the steering axis. It directly affects trail and, in turn, how the bike handles at speed.' },
-  Trail:       { letter: 'D', dim: 'Trail-dim',       dotted: ['wheelbase2-dotted', 'HTangle-dotted'],                desc: 'Trail is the horizontal distance between where the steering axis hits the ground and where the front axle projects to the ground. More trail means more self-correction and stability; less trail means lighter, quicker steering.' },
-  STangle:     { letter: 'F', dim: 'seattubeangle',   dotted: ['seattube-dotted', 'wheelbase-dotted'],                desc: 'Seat tube angle is measured from horizontal. A steeper angle (more vertical) shifts your weight forward over the pedals, common on climbing and TT bikes.' },
-  HTangle:     { letter: 'H', dim: 'HTangle-dim',     dotted: ['HTangle-dotted', 'wheelbase-dotted'],                 desc: 'Head tube angle is measured from horizontal. A slacker angle (lower number) gives more stable, slower steering. A steeper angle makes the steering quicker and more responsive.' },
-  HTLength:    { letter: 'G', dim: 'HTlength-dim',                                                                    desc: 'Head tube length determines how much stack height comes from the frame itself versus from spacers and stem rise. Longer head tubes suit more upright riders.' },
-  EffTT:       { letter: 'I', dim: 'effectiveTT-dim', dotted: ['EffTT-dotted'],                                       desc: 'Effective top tube is the horizontal distance between the seat tube centerline and the head tube centerline, measured at saddle height. It reflects the frame\'s reach independent of seat tube angle.' },
-  Chainstay:   { letter: 'J', dim: 'Chainstay-dim',                                                                   desc: 'Chainstay length runs from the bottom bracket center to the rear axle center. Shorter chainstays make a bike feel snappier and more responsive. Longer stays improve stability and heel clearance.' },
-  Wheelbase:   { letter: 'K', dim: 'Wheelbase-dim',   dotted: ['wheelbase-dotted', 'wheelbase1-dotted', 'wheelbase2-dotted'], desc: 'Wheelbase is the axle-to-axle distance. Longer wheelbase means more stability at speed and over rough terrain. Shorter wheelbase makes the bike more agile and snappy.' },
-  BBdrop:      { letter: 'L', dim: 'BBdrop-dim',      dotted: ['wheelbase-dotted'],                                   desc: 'Bottom bracket drop is how far the BB center sits below the wheel axle centerline. More drop lowers your center of gravity for stability; less drop gives more ground clearance, which matters on rough terrain.' },
-  FrontCenter: { letter: 'N', dim: 'FrontCenter-dim',                                                                 desc: 'Front centre is the horizontal distance from the bottom bracket to the front axle. It affects weight distribution and toe overlap on frames with short chainstays.' },
+type GeoTable = { road: string; gravel: string; cx: string }
+const PARTS: Record<string, { letter: string; dim?: string; dotted?: string[]; desc: string; table?: GeoTable }> = {
+  Stack:       { letter: 'A', dim: 'Stack-dim',       dotted: ['BBdrop-dim', 'EffTT-dotted'],                        desc: 'Stack is the vertical height from the center of the bottom bracket up to the top of the head tube. A higher stack puts you in a more upright position.',                                                                                                              table: { road: '515–591 mm', gravel: '530–634 mm', cx: '526–597 mm' } },
+  Reach:       { letter: 'B', dim: 'Reach-dim',       dotted: ['Stack-dim', 'effectiveTT-dim'],                      desc: 'Reach is the horizontal distance from the center of the bottom bracket to the top of the head tube. More reach means a longer, more stretched-out position.',                                                                                                   table: { road: '374–402 mm', gravel: '379–415 mm', cx: '379–405 mm' } },
+  ForkOffest:  { letter: 'C', dotted: ['forkoffset-dotted', 'HTangle-dotted'],                                        desc: 'Fork rake (offset) is the perpendicular distance between the front axle and the steering axis. It directly affects trail and, in turn, how the bike handles at speed.',                                                                                          table: { road: '40–55 mm',   gravel: '46–55 mm',   cx: '45–50 mm'   } },
+  Trail:       { letter: 'D', dim: 'Trail-dim',       dotted: ['wheelbase2-dotted', 'HTangle-dotted'],                desc: 'Trail is the horizontal distance between where the steering axis hits the ground and where the front axle projects to the ground. More trail means more self-correction and stability; less trail means lighter, quicker steering.',                             table: { road: '55–61 mm',   gravel: '58–71 mm',   cx: '62–71 mm'   } },
+  STangle:     { letter: 'F', dim: 'seattubeangle',   dotted: ['seattube-dotted', 'wheelbase-dotted'],                desc: 'Seat tube angle is measured from horizontal. A steeper angle (more vertical) shifts your weight forward over the pedals, common on climbing and TT bikes.',                                                                                                     table: { road: '73–74.5°',   gravel: '73–75°',     cx: '73.2–74.5°' } },
+  HTangle:     { letter: 'H', dim: 'HTangle-dim',     dotted: ['HTangle-dotted', 'wheelbase-dotted'],                 desc: 'Head tube angle is measured from horizontal. A slacker angle (lower number) gives more stable, slower steering. A steeper angle makes the steering quicker and more responsive.',                                                                              table: { road: '72–73.8°',   gravel: '69–72°',     cx: '71–72.5°'   } },
+  HTLength:    { letter: 'G', dim: 'HTlength-dim',                                                                    desc: 'Head tube length determines how much stack height comes from the frame itself versus from spacers and stem rise. Longer head tubes suit more upright riders.',                                                                                                  table: { road: '106–184 mm', gravel: '97–188 mm',  cx: '110–170 mm' } },
+  EffTT:       { letter: 'I', dim: 'effectiveTT-dim', dotted: ['EffTT-dotted'],                                       desc: 'Effective top tube is the horizontal distance between the seat tube centerline and the head tube centerline, measured at saddle height. It reflects the frame\'s reach independent of seat tube angle.',                                                       table: { road: '526–581 mm', gravel: '542–589 mm', cx: '534–578 mm' } },
+  Chainstay:   { letter: 'J', dim: 'Chainstay-dim',                                                                   desc: 'Chainstay length runs from the bottom bracket center to the rear axle center. Shorter chainstays make a bike feel snappier and more responsive. Longer stays improve stability and heel clearance.',                                                          table: { road: '405–413 mm', gravel: '420–435 mm', cx: '425 mm'     } },
+  Wheelbase:   { letter: 'K', dim: 'Wheelbase-dim',   dotted: ['wheelbase-dotted', 'wheelbase1-dotted', 'wheelbase2-dotted'], desc: 'Wheelbase is the axle-to-axle distance. Longer wheelbase means more stability at speed and over rough terrain. Shorter wheelbase makes the bike more agile and snappy.',                                                                   table: { road: '968–1,011 mm', gravel: '1,010–1,078 mm', cx: '1,006–1,040 mm' } },
+  BBdrop:      { letter: 'L', dim: 'BBdrop-dim',      dotted: ['wheelbase-dotted'],                                   desc: 'Bottom bracket drop is how far the BB center sits below the wheel axle centerline. More drop lowers your center of gravity for stability; less drop gives more ground clearance, which matters on rough terrain.',                                           table: { road: '68–77 mm',   gravel: '72–85 mm',   cx: '60–70 mm'   } },
+  FrontCenter: { letter: 'N', dim: 'FrontCenter-dim',                                                                 desc: 'Front centre is the horizontal distance from the bottom bracket to the front axle. It affects weight distribution and toe overlap on frames with short chainstays.',                                                                                           table: { road: '574–611 mm', gravel: '602–651 mm', cx: '588–623 mm' } },
 }
 
 const PART_KEYS_BY_LETTER = Object.keys(PARTS).sort((a, b) =>
@@ -221,9 +222,29 @@ export default function BikeGeometryClient({ svgMarkup }: { svgMarkup: string })
         ) : (
           <div className={styles.descList}>
             {activeByLetter.map(part => (
-              <div key={part} className={styles.descItem}>
-                <span className={styles.descLetter}>{PARTS[part].letter}</span>
-                <p className={styles.descText}>{PARTS[part].desc}</p>
+              <div key={part} className={styles.descGroup}>
+                <div className={styles.descItem}>
+                  <span className={styles.descLetter}>{PARTS[part].letter}</span>
+                  <p className={styles.descText}>{PARTS[part].desc}</p>
+                </div>
+                {PARTS[part].table && (
+                  <table className={styles.geoTable}>
+                    <thead>
+                      <tr>
+                        <th>Road</th>
+                        <th>Gravel</th>
+                        <th>Cyclocross</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{PARTS[part].table!.road}</td>
+                        <td>{PARTS[part].table!.gravel}</td>
+                        <td>{PARTS[part].table!.cx}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                )}
               </div>
             ))}
           </div>
