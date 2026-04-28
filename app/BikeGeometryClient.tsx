@@ -82,8 +82,9 @@ export default function BikeGeometryClient({ svgMarkup }: { svgMarkup: string })
       { parts: ['STangle', 'HTangle', 'Chainstay'],      x: 529, right: 719  },
       { parts: ['EffTT', 'HTLength', 'BBdrop'],          x: 766, right: 1035 },
     ]
-    const SCALE = 1.15
-    const SVG_W  = 1180
+    const SCALE           = 1.32  // 1.15 baseline × 1.15 = +15%
+    const SVG_W           = 1180
+    const ROW_EXTRA_SPACE = 20    // SVG units of additional vertical spacing per row
 
     function applyMobileScale() {
       if (!root) return
@@ -91,8 +92,7 @@ export default function BikeGeometryClient({ svgMarkup }: { svgMarkup: string })
       const svgWidth = svgEl?.getBoundingClientRect().width ?? 0
       if (svgWidth > 800) return
 
-      // Distribute columns evenly across the full SVG width so all horizontal
-      // space is used rather than leaving columns bunched on the left.
+      // Distribute columns evenly across the full SVG width.
       const MARGIN      = 40
       const available   = SVG_W - 2 * MARGIN
       const totalScaled = COLUMNS.reduce((sum, { x, right }) => sum + (right - x) * SCALE, 0)
@@ -102,17 +102,26 @@ export default function BikeGeometryClient({ svgMarkup }: { svgMarkup: string })
       COLUMNS.forEach(({ parts, x, right }) => {
         const halfW    = (right - x) / 2 * SCALE
         const targetCx = cursor + halfW
-        const shift    = targetCx - (x + right) / 2
+        const xShift   = targetCx - (x + right) / 2
         cursor         = targetCx + halfW + gap
 
-        parts.forEach(part => {
+        // Sort parts top-to-bottom by bbox Y so row index is reliable.
+        const sorted = [...parts].sort((a, b) => {
+          const ay = (bboxes[a]?.y ?? 0) + (bboxes[a]?.height ?? 0) / 2
+          const by = (bboxes[b]?.y ?? 0) + (bboxes[b]?.height ?? 0) / 2
+          return ay - by
+        })
+
+        sorted.forEach((part, rowIdx) => {
           const btn = root.querySelector(`[id="${part}-button"]`) as SVGGraphicsElement | null
           const bb  = bboxes[part]
           if (!btn || !bb) return
-          const bcx = bb.x + bb.width  / 2
-          const bcy = bb.y + bb.height / 2
+          const bcx    = bb.x + bb.width  / 2
+          const bcy    = bb.y + bb.height / 2
+          // Middle row (idx 1) stays in place; top shifts up, bottom shifts down.
+          const yShift = (rowIdx - 1) * ROW_EXTRA_SPACE
           btn.setAttribute('transform',
-            `translate(${shift},0) translate(${bcx},${bcy}) scale(${SCALE}) translate(${-bcx},${-bcy})`
+            `translate(${xShift},${yShift}) translate(${bcx},${bcy}) scale(${SCALE}) translate(${-bcx},${-bcy})`
           )
         })
       })
