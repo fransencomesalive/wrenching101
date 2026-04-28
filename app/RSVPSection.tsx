@@ -18,6 +18,7 @@ export default function RSVPSection() {
   const [rsvps, setRsvps] = useState<RSVPEntry[]>([])
 
   const going = rsvps.filter(r => r.status === 'going')
+  const notGoing = rsvps.filter(r => r.status === 'not-going')
 
   async function fetchRsvps() {
     try {
@@ -121,23 +122,19 @@ export default function RSVPSection() {
 
       <div className={styles.listDivider} />
 
-      <p className={styles.attendeeCount}>
-        {going.length === 0
-          ? 'No responses yet'
-          : `${going.length} of 16 cyclist${going.length === 1 ? '' : 's'} going`}
-      </p>
-
-      <div className={styles.attendeeGrid} aria-label="Attending">
-        {Array.from({ length: 16 }, (_, i) => {
-          const r = going[i]
-          return (
-            <div key={i} className={styles.attendeeSlot}>
-              {r && (
-                <span className={styles.attendeeItem}>{r.name}</span>
-              )}
-            </div>
-          )
-        })}
+      <div className={styles.rsvpTwoCol}>
+        <div className={styles.rsvpColGroup}>
+          <p className={styles.rsvpColHeader}>ATTENDING</p>
+          {going.map((r, i) => (
+            <span key={i} className={styles.attendeeItem}>{r.name}</span>
+          ))}
+        </div>
+        <div className={styles.rsvpColGroup}>
+          <p className={styles.rsvpColHeader}>NOT ATTENDING</p>
+          {notGoing.map((r, i) => (
+            <span key={i} className={styles.attendeeItem}>{r.name}</span>
+          ))}
+        </div>
       </div>
     </div>
   )

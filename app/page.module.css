@@ -383,26 +383,25 @@
   margin: 14px 0;
 }
 
-.attendeeCount {
-  margin-bottom: 8px;
-  font-family: var(--w-display);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.10em;
-  color: var(--w-faint);
-}
-
-.attendeeGrid {
+.rsvpTwoCol {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 3px 12px;
+  gap: 0 16px;
 }
 
-.attendeeSlot {
-  height: 20px;
+.rsvpColGroup {
   display: flex;
-  align-items: center;
-  overflow: hidden;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.rsvpColHeader {
+  margin: 0 0 4px;
+  font-family: var(--w-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  color: var(--w-cream);
 }
 
 .attendeeItem {
