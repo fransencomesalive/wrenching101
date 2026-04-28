@@ -57,15 +57,16 @@ Licensed fonts ARE committed to git. No manual copy needed on new machines.
 - "Take-home curriculum" and "Syllabus coming soon" are muted text placeholders
 - On mobile: dot separators hide, items stack vertically
 
-## RSVP backend — outstanding before launch
-Frontend and API route (`app/api/rsvp/route.ts`) are complete. Gracefully no-ops if env vars are missing.
+## RSVP backend — LIVE
 
-- [ ] Add Vercel KV store to the project, run `vercel env pull`
-- [ ] Create Resend account, verify `mettlecycling.com` domain
-- [ ] Add `RESEND_API_KEY` to Vercel project env vars
-- [ ] Test end-to-end: form submission, KV storage, email to randall@mettlecycling.com
+Storage: Vercel Blob private store (`wrenching101-rsvps`, `store_1PpvAB2cFZVg5Y8O`).
+`BLOB_READ_WRITE_TOKEN` set in Vercel env vars (all environments). Local `.env.local` pulled via `vercel env pull`.
+
+Email notification: `mailto:` link opened client-side after successful POST, same pattern as Flanders26. No Resend, no API key needed. Pre-fills subject and body with name + status.
+
+- `app/api/rsvp/route.ts` — GET reads blob, POST appends entry and writes blob back
+- `app/RSVPSection.tsx` — opens `mailto:randall@mettlecycling.com` after successful POST
 
 ## Resume here (next session)
-1. Set up Vercel KV + Resend for RSVP backend
-2. Review diagram dotted line behavior (user flagged for review)
-3. Any remaining mobile or polish issues
+1. Review diagram dotted line behavior (user flagged for review)
+2. Any remaining mobile or polish issues
