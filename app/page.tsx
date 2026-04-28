@@ -5,7 +5,8 @@ import styles from './page.module.css'
 
 const EVENT_DATE = 'May 12'
 const EVENT_TIME = 'Time TBD'
-const EVENT_LOCATION = 'Location TBD'
+const EVENT_LOCATION = 'High Haus'
+const EVENT_LOCATION_URL = 'https://share.google/t5MrtQPmXCXskQrtN'
 
 const AGENDA_ITEMS = [
   {
@@ -76,6 +77,18 @@ export default function Page() {
                 We will cover the fundamentals of your bike (how it is built, how it wears,
                 and how to keep it running) without assuming you have been in a shop before.
               </p>
+              <p className={styles.introBody}>
+                Talk starts at 6:30. Come as early as 6. After we&apos;re done, we can address
+                any issues with your bike applying what we learned; if we can&apos;t fix it,
+                you&apos;ll know your next steps. I&apos;ll be selling{' '}
+                <a
+                  href="https://www.mettlecycling.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.inlineLink}
+                >Mettle&nbsp;Merch</a>{' '}
+                for big discounts as well. Bring a camp chair just in case. We&apos;ll have a few out.
+              </p>
               <div className={styles.eventMetaCard}>
                 <div className={styles.metaItem}>
                   <span className={styles.metaItemLabel}>Date</span>
@@ -87,7 +100,16 @@ export default function Page() {
                 </div>
                 <div className={styles.metaItem}>
                   <span className={styles.metaItemLabel}>Location</span>
-                  <span className={styles.metaItemValue}>{EVENT_LOCATION}</span>
+                  <span className={styles.metaItemValue}>
+                    <a
+                      href={EVENT_LOCATION_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.metaLink}
+                    >
+                      📍 {EVENT_LOCATION}
+                    </a>
+                  </span>
                 </div>
               </div>
             </div>
