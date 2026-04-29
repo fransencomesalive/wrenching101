@@ -1,7 +1,7 @@
 // ─── Auth ──────────────────────────────────────────────────────────────
 
 if (!sessionStorage.getItem('w101_auth')) {
-  window.location.replace('index.html');
+  window.location.replace('/wrenching101-index');
 }
 
 // ─── Mettle Background ─────────────────────────────────────────────────

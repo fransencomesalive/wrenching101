@@ -160,7 +160,7 @@ export default function Page() {
             </a>
             <span className={styles.footerDot} aria-hidden="true">·</span>
             <a
-              href="/presentation/"
+              href="/wrenching101-index"
               className={styles.footerLink}
               target="_blank"
               rel="noopener noreferrer"

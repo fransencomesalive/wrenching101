@@ -90,7 +90,7 @@ const PASS = 'M3ttle@sfuck!';
 const KEY  = 'w101_auth';
 
 if (sessionStorage.getItem(KEY)) {
-  window.location.replace('slides.html');
+  window.location.replace('/wrenching101-slides');
 }
 
 const form  = document.getElementById('gate-form');
@@ -101,7 +101,7 @@ form.addEventListener('submit', function (e) {
   e.preventDefault();
   if (input.value === PASS) {
     sessionStorage.setItem(KEY, '1');
-    window.location.replace('slides.html');
+    window.location.replace('/wrenching101-slides');
   } else {
     error.textContent = 'Incorrect code. Try again.';
     input.value = '';
