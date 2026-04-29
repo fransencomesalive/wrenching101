@@ -1,152 +1,87 @@
 # Current State — Wrenching 101
 
 ## Status
-Page is live at `wrenching101.mettlecycling.com`. RSVP backend live (Vercel Blob + silent submit, no email client prompt). Submit button is currently enabled with test data in the blob. Before sending invites: reset blob data and disable submit button until date is confirmed.
+Page is live at `wrenching101.mettlecycling.com`. RSVP backend live. Submit button enabled with test data. Before invites go out: reset blob and disable submit button.
+
+## BROKEN: OG Share Image — needs fix next session
+
+Multiple attempts were made to get the OG share image working. None were verified as working in FB debugger.
+
+### What was tried and failed
+1. `app/opengraph-image.tsx` using next/og — endpoint generated 200 image/png per curl, but FB debugger never showed the image. Likely cause: FB scraper timeout on SVG-to-PNG rendering via satori/resvg serverless cold start.
+2. Various redesigns of the same endpoint — wrong approach (bug fix not redesign).
+3. Static PNG via sharp — `public/og-image.png` generated (1200x630, all dims visible, no labels, dark background). All OG tags now point to `https://wrenching101.mettlecycling.com/og-image.png`. Dynamic endpoint removed.
+
+### Current state
+- `public/og-image.png` is committed and deployed.
+- All three pages point to it: `/`, `/wrenching101-index`, `/wrenching101-slides`.
+- **NOT VERIFIED** in FB debugger — session ended before confirmation.
+- If still broken: check that `/og-image.png` is publicly accessible, check FB debugger error message, try iMessage or Twitter card validator as alternative test.
+
+### OG tag values (correct, verified via curl)
+- `og:title`: Presented by Mettle Cycling
+- `og:description`: An intro for cyclists who ride confidently and wrench... less so.
+- `og:image`: `https://wrenching101.mettlecycling.com/og-image.png`
+
+---
+
+## INCOMPLETE: Mobile styling — needs verification next session
+
+### What was done
+- `gate.css`: Added `@media (max-width: 600px)` — title `clamp(36px, 12vw, 60px)`, form `calc(100vw - 48px)`.
+- `slides.css`: Added `@media (max-width: 768px)` — nav buttons 48x48px, pip strip hidden, nav padding reduced.
+
+### What was NOT done — Claude's failure
+- **Mobile was never verified at 320/375/390px before shipping.** This is a hard-coded mandatory rule that was violated twice in the same session.
+- Gate page: title fix applied, but no visual confirmation that it renders correctly on small screens.
+- Slides: JS proportional scaling handles content, but the nav fix was not verified on actual mobile viewport.
+- No check was done for text overflow, clipping, or interaction issues at any mobile breakpoint.
+
+### What next session must do
+1. Open `/wrenching101-index` at 320px, 375px, 390px — confirm title fits, form is usable.
+2. Open `/wrenching101-slides` at 375px — confirm nav arrows are tappable, counter is visible, no layout breakage.
+3. Fix anything that doesn't pass visual check before calling it done.
+
+---
 
 ## Presentation — LIVE 2026-04-29
 
-Static HTML deck served at new URLs (rewrites added to `next.config.ts`):
-- `/wrenching101-index` — password gate (password: `Wr3nch`, sessionStorage key `w101_auth`)
-- `/wrenching101-slides` — 89-slide deck, 1920x1080 viewport with proportional scaling
-
-Assets remain at `public/presentation/css/` and `public/presentation/js/` — all paths are now absolute so they work from any URL.
-
-Footer "Take-home curriculum" link updated to `/wrenching101-index`.
-
-### Structure
-- `public/presentation/index.html` — gate page
-- `public/presentation/slides.html` — slide deck
-- `public/presentation/css/base.css`, `css/gate.css`, `css/slides.css`
-- `public/presentation/js/gate.js`, `js/slides.js`
-- Geometry SVG: `public/diagrams/BikeGeo-chart.svg`
-
-### Slide count and sections
-- 01: Cover
-- 02-05: Intro
-- 06-12: Section 01 — Bike Types and Geometry
-- 13-18: Section 02 — Frame Materials
-- 19-26: Section 03 — Fit Basics
-- 27-34: Section 04 — Drivetrain Types
-- 35-42: Section 05 — Drivetrain Maintenance
-- 43-53: Section 06 — Tire Talk
-- 54-62: Section 07 — Adjustments and Diagnosis
-- 63-70: Section 08 — Pre-Ride Checks
-- 71-86: Geometry Deep Dive (12 geo slides with live SVG layer toggle)
-- 87-89: Closing / Resources / Q&A
-
-### Geometry slides
-Single `#geo-host` div inside `slide-viewport`; SVG fetched once via JS, layers toggled per slide via `data-geo` attribute. Button overlays hidden, all dim layers hidden by default, revealed per slide.
+- `/wrenching101-index` — password gate (password: `Wr3nch`)
+- `/wrenching101-slides` — 89-slide deck, 1920x1080, proportional JS scaling
+- All CSS/JS paths absolute (`/presentation/css/...`, `/presentation/js/...`)
+- Footer "Take-home curriculum" links to `/wrenching101-index`
 
 ### Pending
-- Image placeholders (15+ slides): batch AI image generation needed; brief documented in project memory
-- Visual verification pass in browser before event
-- Scaffold source: `docs/wrenching101-presentation-scaffold.md`
+- Image placeholders (15+ slides): batch AI image generation needed
+- Visual verification pass before event
+- Review diagram dotted line behavior (deferred)
 
-## OG / Social Share — ADDED 2026-04-29
-
-- `app/opengraph-image.tsx` — generates OG image: bike geometry diagram with all dims visible, button labels hidden, dark background. No font loading. SVG rendered as PNG via next/og.
-- `app/layout.tsx` — OG + Twitter metadata on main page
-- Both presentation HTML pages have favicon (wrench emoji) and OG meta tags
-- og:title: "Presented by Mettle Cycling"
-- og:description: "An intro for cyclists who ride confidently and wrench... less so."
-- og:image: `https://wrenching101.mettlecycling.com/opengraph-image`
-- `next.config.ts` — `outputFileTracingIncludes` bundles `public/diagrams/**` and `public/fonts/**` for the OG image function
-
-### Open issue
-- FB debugger has not been re-verified after the final fix (font loading removed, SVG-only image). Needs confirmation that `/opengraph-image` renders correctly and FB shows it.
+---
 
 ## Stack
 - Next.js App Router, TypeScript strict, CSS Modules
 - Local: `http://localhost:3000`
-- Production: `wrenching101.mettlecycling.com` (Vercel project: `wrenching101` under `fransencomesalive-4748s-projects`)
+- Production: `wrenching101.mettlecycling.com` (Vercel, `fransencomesalive-4748s-projects`)
 - Repo: `https://github.com/fransencomesalive/wrenching101.git`
 - Packages: `@vercel/blob`
 
 ## Fonts
-Licensed fonts ARE committed to git. No manual copy needed on new machines.
-
-## Page structure
-1. **Hero** — Patheos/red headline (full-width fill), New Athletic 54 tagline
-2. **Intro + RSVP row** — 2-column card grid, stacks to 1-column on mobile
-3. **Agenda** — 8 topic cards in 2-column grid, stacks to 1-column on mobile
-4. **Bike frame diagram** — interactive SVG with click-to-reveal measurements
-5. **Footer** — Mettle Cycling (link), Take-home curriculum (links to /wrenching101-index), Syllabus coming soon
+Licensed fonts committed to git. No manual copy needed.
 
 ## Design decisions (do not revisit without reason)
-- New Athletic 54: all-caps display, limited character set, ASCII only, no contractions
+- New Athletic 54: all-caps display, ASCII only, no apostrophes, no contractions
 - Cards: `rgba(0, 12, 18, 0.85)` panel, `2px solid rgba(0, 170, 201, 0.38)` teal border
 - Drop shadow on headline only, never in cards
-- Tagline uses New Athletic 54, not Gotham
-- Attendee grid: two-column layout, ATTENDING / NOT ATTENDING headers in cream display font
-- Attendee names: 13px, weight 700, `var(--w-muted)` color
-- No em dashes anywhere in copy, ever
-
-## Headline (full-width fill)
-- Sized via `HeadlineAutosize.tsx` — client component that measures actual rendered text width and sets font-size to fill the maxWidth container exactly
-- CSS fallback: `clamp(58px, calc(8.894vw - 4.27px), 105px)` (corrected before JS hydrates)
-- Hero container uses same `min(1180px, calc(100% - 48px))` as all other sections on all breakpoints
-
-## Mobile layout
-- All grids collapse to 1-column at 700px
-- Diagram intro text: `position: static` on mobile
-
-## Frame diagram
-### Architecture
-- SVG source: `public/diagrams/BikeGeo-chart.svg`
-- Server component: `app/BikeGeometryDiagram.tsx` — reads SVG at build time
-- Client component: `app/BikeGeometryClient.tsx` — React synthetic onClick on container div, imperative innerHTML injection via useEffect
-
-### Interaction
-- Click any label to reveal its measurement and description
-- Multiple labels can be active simultaneously
-- Active labels dim inactive ones to 0.3 opacity
-- Toggle: click active label again to deactivate
-- Desc bar at bottom shows letter + description for each active measurement
-- Below each description: a 2-row x 3-col Road/Gravel/Cyclocross comparison table (teal-bordered grid, `var(--w-muted)` text, headers 15% larger than values)
-
-### Comparison table
-- Data from `docs/frame-geometry-research.md` (Codex handoff)
-- Fixed `max-width: 390px; width: 100%` — desktop centers at 390px, mobile shrinks to fit
-- Below 440px: font drops to 10px, padding reduces to 7px/4px
-- All 12 measurements have table data
-
-### Mobile label scaling
-- SCALE = 1.32 (1.15 baseline x 1.15)
-- 4 label columns evenly distributed across full SVG width (MARGIN=40, gap calculated dynamically)
-- Rows within each column spread by ROW_EXTRA_SPACE=20 SVG units (middle row anchored, top/bottom offset +/-20)
-- Breakpoint: svgWidth > 800 skips mobile transforms
-
-### Effects
-- `#Bike_Frame` pulses with teal glow animation
-- Scan line sweeps top-to-bottom every 8s
-- Background grid overlay
-
-## Footer
-- "Mettle Cycling" links to `https://www.mettlecycling.com` (opens new tab)
-- "Take-home curriculum" links to `/wrenching101-index` (opens new tab)
-- "Syllabus coming soon" is muted text placeholder
-- On mobile: dot separators hide, items stack vertically
+- No em dashes anywhere
 
 ## RSVP backend — LIVE
-
-Storage: Vercel Blob private store (`wrenching101-rsvps`, `store_1PpvAB2cFZVg5Y8O`).
-`BLOB_READ_WRITE_TOKEN` set in Vercel env vars (all environments). Local `.env.local` pulled via `vercel env pull`.
-
-Email notification: none (no Resend, no mailto). Form submits silently; attendee list updates live on the page.
-
-- `app/api/rsvp/route.ts` — GET reads blob, POST appends entry and writes blob back
-- `app/RSVPSection.tsx` — ATTENDING / NOT ATTENDING two-column layout; submit is currently enabled
-
-### To reset blob data (run from wrenching101 dir):
-```js
-// seed_tmp.mjs
-import { put } from '@vercel/blob';
-await put('rsvps.json', '[]', { access: 'private', addRandomSuffix: false, allowOverwrite: true, contentType: 'application/json', token: 'BLOB_READ_WRITE_TOKEN_VALUE' });
-```
+- Vercel Blob: `wrenching101-rsvps`, `store_1PpvAB2cFZVg5Y8O`
+- `BLOB_READ_WRITE_TOKEN` in Vercel env vars
+- To reset: `put('rsvps.json', '[]', { access: 'private', addRandomSuffix: false, allowOverwrite: true, ... })`
 
 ## Resume here (next session)
-1. Verify FB debugger shows OG image at all three URLs after Vercel deploy settles
-2. Reset blob to `[]` and disable submit button before invites go out
-3. Re-enable submit button once date is confirmed and invites are ready
-4. Review diagram dotted line behavior (flagged for review, deferred)
-5. Image placeholders (15+ slides): batch AI image generation pending
+1. Verify OG image shows in FB debugger — scrape `https://wrenching101.mettlecycling.com/` and both presentation URLs
+2. Verify mobile layout at 320/375/390px for gate and slides nav
+3. Fix anything broken from items 1 and 2
+4. Reset blob and disable submit before invites go out
+5. Image placeholder generation (15+ slides)
