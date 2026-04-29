@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   devIndicators: false,
   outputFileTracingIncludes: {
-    '/opengraph-image': ['./public/diagrams/BikeGeo-chart.svg', './public/fonts/**'],
+    '/opengraph-image': ['./public/diagrams/**', './public/fonts/**'],
   },
   async rewrites() {
     return [
