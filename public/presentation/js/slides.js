@@ -93,9 +93,11 @@ function drawMesh(ctx, nodes, W, H) {
 // ─── Viewport Scaling ──────────────────────────────────────────────────
 
 const viewport = document.querySelector('.slide-viewport');
+const deckNavEl = document.querySelector('.deck-nav');
 
 function scaleViewport() {
-  const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+  const navH = deckNavEl ? deckNavEl.offsetHeight : 0;
+  const scale = Math.min(window.innerWidth / 1920, (window.innerHeight - navH) / 1080);
   viewport.style.transform = 'scale(' + scale + ')';
 }
 
@@ -152,6 +154,25 @@ document.addEventListener('keydown', function (e) {
     e.preventDefault(); prev();
   }
 });
+
+// ─── Touch / Swipe ─────────────────────────────────────────────────────
+
+(function initSwipe() {
+  var touchStartX = 0;
+  var touchStartY = 0;
+
+  document.addEventListener('touchstart', function (e) {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  document.addEventListener('touchend', function (e) {
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    var dy = e.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return;
+    if (dx < 0) { next(); } else { prev(); }
+  }, { passive: true });
+})();
 
 btnHome.addEventListener('click', function () { goTo(0); });
 btnPrev.addEventListener('click', prev);

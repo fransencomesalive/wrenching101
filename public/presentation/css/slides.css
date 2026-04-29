@@ -691,4 +691,9 @@ body.is-geo #geo-host {
     font-size: 13px;
     min-width: 52px;
   }
+
+  /* Reserve space for fixed nav so flex centering stays above it */
+  .slide-stage {
+    padding-bottom: 82px;
+  }
 }
