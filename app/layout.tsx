@@ -13,14 +13,14 @@ export const metadata: Metadata = {
     description: 'An intro for cyclists who ride confidently and wrench... less so.',
     url: 'https://wrenching101.mettlecycling.com',
     siteName: 'Wrenching 101',
-    images: [{ url: 'https://wrenching101.mettlecycling.com/opengraph-image', width: 1200, height: 630 }],
+    images: [{ url: 'https://wrenching101.mettlecycling.com/og-image.png', width: 1200, height: 630 }],
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Presented by Mettle Cycling',
     description: 'An intro for cyclists who ride confidently and wrench... less so.',
-    images: ['https://wrenching101.mettlecycling.com/opengraph-image'],
+    images: ['https://wrenching101.mettlecycling.com/og-image.png'],
   },
 }
 

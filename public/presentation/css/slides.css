@@ -664,3 +664,31 @@ body.is-geo #geo-host {
   text-transform: uppercase;
   color: var(--cream-faint);
 }
+
+/* ─── Mobile ─────────────────────────────────────────────────────────────
+   The slide viewport scales proportionally via JS (scale = min(vw/1920, vh/1080)).
+   Only elements outside the scaled viewport need mobile-specific treatment.
+   ───────────────────────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  /* Larger touch targets on nav buttons */
+  .deck-nav__btn {
+    width: 48px;
+    height: 48px;
+  }
+
+  /* 89 pips at 9px are not usable on mobile — hide and rely on counter + arrows */
+  .deck-nav__strip {
+    display: none;
+  }
+
+  .deck-nav {
+    padding: 14px 24px 20px;
+    gap: 16px;
+  }
+
+  .deck-nav__counter {
+    font-size: 13px;
+    min-width: 52px;
+  }
+}
