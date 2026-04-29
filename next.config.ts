@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   devIndicators: false,
+  outputFileTracingIncludes: {
+    '/opengraph-image': ['./public/diagrams/BikeGeo-chart.svg', './public/fonts/**'],
+  },
   async rewrites() {
     return [
       { source: '/wrenching101-index', destination: '/presentation/index.html' },
