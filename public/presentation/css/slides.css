@@ -148,7 +148,7 @@
 .heading-slide {
   font-family: var(--font-body);
   font-weight: var(--w-bold);
-  font-size: 64px;
+  font-size: 80px;
   line-height: 1.0;
   color: var(--cream);
 }
@@ -157,17 +157,17 @@
 .heading-card {
   font-family: var(--font-body);
   font-weight: var(--w-bold);
-  font-size: 28px;
-  line-height: 1.2;
+  font-size: 40px;
+  line-height: 1.15;
   color: var(--cream);
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 /* Gotham Medium — secondary headings */
 .heading-sub {
   font-family: var(--font-body);
   font-weight: var(--w-medium);
-  font-size: 22px;
+  font-size: 28px;
   line-height: 1.3;
   color: var(--cream-muted);
   margin-bottom: 24px;
@@ -176,21 +176,21 @@
 .body-text {
   font-family: var(--font-body);
   font-weight: var(--w-light);
-  font-size: 20px;
-  line-height: 1.7;
+  font-size: 26px;
+  line-height: 1.65;
   color: var(--cream-muted);
 }
 
 .body-text--large {
-  font-size: 24px;
-  line-height: 1.6;
+  font-size: 34px;
+  line-height: 1.55;
 }
 
 /* Amber label — section heads, instructional kickers */
 .label {
   font-family: var(--font-body);
   font-weight: var(--w-bold);
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--amber);
@@ -209,7 +209,7 @@
 .card {
   background: var(--panel);
   border: 2px solid var(--teal-border);
-  padding: 48px;
+  padding: 56px;
 }
 
 /* ─── Bullet List ──────────────────────────────────────────────────── */
@@ -223,10 +223,10 @@
 .slide__bullet {
   font-family: var(--font-body);
   font-weight: var(--w-light);
-  font-size: 22px;
+  font-size: 28px;
   line-height: 1.5;
   color: var(--cream-muted);
-  padding: 18px 0;
+  padding: 22px 0;
   border-bottom: 1px solid var(--divider);
 }
 
@@ -250,31 +250,31 @@
 .geo-table th {
   font-family: var(--font-body);
   font-weight: var(--w-bold);
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--amber);
   text-align: left;
-  padding-bottom: 10px;
+  padding-bottom: 12px;
   border-bottom: 1px solid var(--teal-border);
 }
 
 .geo-table th:not(:first-child) {
-  padding-left: 12px;
+  padding-left: 16px;
 }
 
 .geo-table td {
   font-family: var(--font-body);
   font-weight: var(--w-light);
-  font-size: 16px;
+  font-size: 20px;
   color: var(--cream-muted);
-  padding: 10px 0;
+  padding: 12px 0;
   border-bottom: 1px solid rgba(0, 170, 201, 0.10);
   line-height: 1.4;
 }
 
 .geo-table td:not(:first-child) {
-  padding-left: 12px;
+  padding-left: 16px;
 }
 
 .geo-table tr:last-child td {
@@ -283,11 +283,11 @@
 
 .geo-table td:first-child {
   color: var(--cream-faint);
-  font-size: 9px;
+  font-size: 11px;
   font-weight: var(--w-bold);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  width: 72px;
+  width: 80px;
 }
 
 /* ─── Image Placeholder ────────────────────────────────────────────── */
@@ -306,7 +306,7 @@
 .img-placeholder__tag {
   font-family: var(--font-body);
   font-weight: var(--w-bold);
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--teal);
@@ -316,10 +316,10 @@
 .img-placeholder__desc {
   font-family: var(--font-body);
   font-weight: var(--w-light);
-  font-size: 16px;
+  font-size: 20px;
   color: var(--cream-faint);
   text-align: center;
-  max-width: 320px;
+  max-width: 360px;
   line-height: 1.55;
 }
 
@@ -344,7 +344,7 @@
 .slide--cover .slide__date {
   font-family: var(--font-body);
   font-weight: var(--w-bold);
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--cream-faint);
@@ -370,9 +370,9 @@
 .slide--cover .slide__sub {
   font-family: var(--font-body);
   font-weight: var(--w-light);
-  font-size: 22px;
+  font-size: 28px;
   color: var(--cream-muted);
-  max-width: 680px;
+  max-width: 760px;
   line-height: 1.6;
 }
 
@@ -389,7 +389,7 @@
 .slide--section .slide__number {
   font-family: var(--font-body);
   font-weight: var(--w-bold);
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--amber);
@@ -408,19 +408,31 @@
   font-size: 120px;
 }
 
-/* ─── Template: Title + Bullets ────────────────────────────────────── */
+/* ─── Template: Title + Bullets ─────────────────────────────────────
+   Left panel: label + heading + intro text
+   Right panel: bullet list
+   Both panels are cards.
+   ─────────────────────────────────────────────────────────────────── */
 
 .slide--title-bullets .slide__content {
   position: absolute;
   inset: 0;
   display: grid;
-  grid-template-columns: 1fr 1.7fr;
+  grid-template-columns: 2fr 3fr;
   padding: var(--my) var(--mx) var(--mb);
-  gap: 80px;
-  align-items: flex-start;
+  gap: 48px;
+  align-items: stretch;
 }
 
-/* ─── Template: Two Panel ───────────────────────────────────────────── */
+.slide--title-bullets .slide__content > * {
+  background: var(--panel);
+  border: 2px solid var(--teal-border);
+  padding: 56px;
+}
+
+/* ─── Template: Two Panel ────────────────────────────────────────────
+   Each panel is a card. Gap separates them.
+   ─────────────────────────────────────────────────────────────────── */
 
 .slide--two-panel .slide__content {
   position: absolute;
@@ -428,60 +440,70 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   padding: var(--my) var(--mx) var(--mb);
-  gap: 0;
-  align-items: flex-start;
+  gap: 48px;
+  align-items: stretch;
 }
 
-.slide__panel {
-  padding-right: 64px;
+.slide--two-panel .slide__panel {
+  background: var(--panel);
+  border: 2px solid var(--teal-border);
+  padding: 56px;
 }
 
-.slide__panel + .slide__panel {
-  padding-right: 0;
-  padding-left: 64px;
-  border-left: 2px solid var(--divider);
+.slide--two-panel .slide__panel + .slide__panel {
+  padding-left: 56px;
+  border-left: 2px solid var(--teal-border);
 }
 
-/* ─── Template: Statement ───────────────────────────────────────────── */
+/* ─── Template: Statement ────────────────────────────────────────────
+   Full-height card from top margin to nav clearance.
+   Content centered within the card.
+   ─────────────────────────────────────────────────────────────────── */
 
 .slide--statement .slide__content {
   position: absolute;
-  inset: 0;
+  left: var(--mx);
+  right: var(--mx);
+  top: var(--my);
+  bottom: var(--mb);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: var(--my) var(--mx) var(--mb);
-  max-width: 1400px;
+  padding: 72px 80px;
+  background: var(--panel);
+  border: 2px solid var(--teal-border);
 }
 
 .heading-statement {
   font-family: var(--font-body);
   font-weight: var(--w-bold);
-  font-size: 80px;
+  font-size: 88px;
   line-height: 1.05;
   color: var(--cream);
 }
 
-/* ─── Template: Geometry ────────────────────────────────────────────── */
+/* ─── Template: Geometry ─────────────────────────────────────────────
+   Left 1/3 has a card; right 2/3 has the SVG diagram.
+   ─────────────────────────────────────────────────────────────────── */
 
 .slide--geometry .slide__content {
   position: absolute;
   left: var(--mx);
   top: var(--my);
   bottom: var(--mb);
-  width: 520px;
+  width: 560px;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
 .slide--geometry .card {
-  padding: 40px;
+  padding: 44px;
 }
 
 .slide--geometry .heading-card {
-  font-size: 24px;
-  margin-bottom: 12px;
+  font-size: 32px;
+  margin-bottom: 14px;
 }
 
 .slide--geometry .label {
@@ -489,14 +511,14 @@
 }
 
 .slide--geometry .body-text {
-  font-size: 17px;
-  line-height: 1.65;
+  font-size: 22px;
+  line-height: 1.6;
 }
 
 /* Shared SVG host — right 2/3 of viewport, above all slides */
 #geo-host {
   position: absolute;
-  left: 640px;
+  left: 720px;
   right: var(--mx);
   top: var(--my);
   bottom: 0;
@@ -520,7 +542,7 @@ body.is-geo #geo-host {
   overflow: visible;
 }
 
-/* ─── Template: Image + Text ────────────────────────────────────────── */
+/* ─── Template: Image + Text ─────────────────────────────────────────── */
 
 .slide--image .slide__content {
   position: absolute;
@@ -542,7 +564,7 @@ body.is-geo #geo-host {
   padding: var(--my) var(--mx);
 }
 
-/* ─── Template: Closing ─────────────────────────────────────────────── */
+/* ─── Template: Closing ──────────────────────────────────────────────── */
 
 .slide--closing .slide__content {
   position: absolute;
@@ -560,7 +582,9 @@ body.is-geo #geo-host {
   margin-bottom: 48px;
 }
 
-/* ─── Template: Three Panel ─────────────────────────────────────────── */
+/* ─── Template: Three Panel ──────────────────────────────────────────
+   Each column is a card. Gap separates them.
+   ─────────────────────────────────────────────────────────────────── */
 
 .slide--three-panel .slide__content {
   position: absolute;
@@ -568,54 +592,51 @@ body.is-geo #geo-host {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   padding: var(--my) var(--mx) var(--mb);
-  gap: 0;
-  align-items: flex-start;
+  gap: 40px;
+  align-items: stretch;
 }
 
-.slide__col {
-  padding-right: 56px;
+.slide--three-panel .slide__col {
+  background: var(--panel);
+  border: 2px solid var(--teal-border);
+  padding: 48px;
   display: flex;
   flex-direction: column;
 }
 
-.slide__col + .slide__col {
-  padding-left: 56px;
-  padding-right: 56px;
-  border-left: 1px solid var(--divider);
-}
-
-.slide__col:last-child {
-  padding-right: 0;
-}
-
-/* ─── Template: Image Right ─────────────────────────────────────────── */
+/* ─── Template: Image Right ──────────────────────────────────────────
+   Text card on left; image placeholder flush on right.
+   ─────────────────────────────────────────────────────────────────── */
 
 .slide--image-right .slide__content {
   position: absolute;
   inset: 0;
   display: grid;
   grid-template-columns: 3fr 2fr;
+  padding: var(--my) var(--mx) var(--mb);
+  gap: 48px;
+  align-items: stretch;
 }
 
 .slide--image-right .slide__text-panel {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: var(--my) var(--mx);
-  border-right: 2px solid var(--divider);
+  background: var(--panel);
+  border: 2px solid var(--teal-border);
+  padding: 64px;
 }
 
 .slide--image-right .img-placeholder {
   height: 100%;
-  border: none;
-  border-left: 2px dashed rgba(0, 170, 201, 0.22);
+  border: 2px dashed rgba(0, 170, 201, 0.22);
 }
 
 /* ─── Compact Bullets ────────────────────────────────────────────────── */
 
 .slide__bullets--compact .slide__bullet {
-  font-size: 19px;
-  padding: 13px 0;
+  font-size: 25px;
+  padding: 16px 0;
   line-height: 1.45;
 }
 
@@ -623,11 +644,11 @@ body.is-geo #geo-host {
 
 .geo-letter {
   font-family: var(--font-display);
-  font-size: 60px;
+  font-size: 64px;
   color: var(--amber);
   line-height: 1;
   letter-spacing: 0.02em;
-  margin: 10px 0 4px;
+  margin: 10px 0 6px;
 }
 
 /* ─── Slide Label Strip (section label on section dividers) ─────────── */
@@ -638,7 +659,7 @@ body.is-geo #geo-host {
   left: var(--mx);
   font-family: var(--font-body);
   font-weight: var(--w-bold);
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--cream-faint);
