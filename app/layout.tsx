@@ -9,8 +9,8 @@ export const metadata: Metadata = {
     icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔧</text></svg>",
   },
   openGraph: {
-    title: 'Wrenching 101 | Mettle Cycling',
-    description: 'An intro for cyclists who ride confidently and wrench... less so. Presented by Mettle Cycling.',
+    title: 'Presented by Mettle Cycling',
+    description: 'An intro for cyclists who ride confidently and wrench... less so.',
     url: 'https://wrenching101.mettlecycling.com',
     siteName: 'Wrenching 101',
     images: [{ url: 'https://wrenching101.mettlecycling.com/opengraph-image', width: 1200, height: 630 }],
@@ -18,8 +18,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Wrenching 101 | Mettle Cycling',
-    description: 'An intro for cyclists who ride confidently and wrench... less so. Presented by Mettle Cycling.',
+    title: 'Presented by Mettle Cycling',
+    description: 'An intro for cyclists who ride confidently and wrench... less so.',
     images: ['https://wrenching101.mettlecycling.com/opengraph-image'],
   },
 }
