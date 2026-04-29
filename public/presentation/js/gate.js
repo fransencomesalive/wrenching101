@@ -86,7 +86,7 @@ function drawMesh(ctx, nodes, W, H) {
 
 // ─── Gate Logic ────────────────────────────────────────────────────────
 
-const PASS = 'M3ttle@sfuck!';
+const PASS = 'Wr3nch';
 const KEY  = 'w101_auth';
 
 if (sessionStorage.getItem(KEY)) {
