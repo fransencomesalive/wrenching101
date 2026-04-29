@@ -3,16 +3,22 @@
 ## Status
 Page is live at `wrenching101.mettlecycling.com`. RSVP backend live (Vercel Blob + silent submit, no email client prompt). Submit button is currently enabled with test data in the blob. Before sending invites: reset blob data and disable submit button until date is confirmed.
 
-## Presentation — BUILT 2026-04-29
+## Presentation — LIVE 2026-04-29
 
-Static HTML deck at `public/presentation/` served at `/presentation/` by Vercel.
+Static HTML deck served at new URLs (rewrites added to `next.config.ts`):
+- `/wrenching101-index` — password gate (password: `Wr3nch`, sessionStorage key `w101_auth`)
+- `/wrenching101-slides` — 89-slide deck, 1920x1080 viewport with proportional scaling
+
+Assets remain at `public/presentation/css/` and `public/presentation/js/` — all paths are now absolute so they work from any URL.
+
+Footer "Take-home curriculum" link updated to `/wrenching101-index`.
 
 ### Structure
-- `index.html` — password gate (`M3ttle@sfuck!`, sessionStorage key `w101_auth`)
-- `slides.html` — 89-slide deck, 1920x1080 viewport with proportional scaling
-- `css/base.css`, `css/gate.css`, `css/slides.css`
-- `js/gate.js`, `js/slides.js`
-- Geometry SVG: `public/diagrams/BikeGeo-chart.svg` (committed; was missing from repo)
+- `public/presentation/index.html` — gate page
+- `public/presentation/slides.html` — slide deck
+- `public/presentation/css/base.css`, `css/gate.css`, `css/slides.css`
+- `public/presentation/js/gate.js`, `js/slides.js`
+- Geometry SVG: `public/diagrams/BikeGeo-chart.svg`
 
 ### Slide count and sections
 - 01: Cover
@@ -31,13 +37,23 @@ Static HTML deck at `public/presentation/` served at `/presentation/` by Vercel.
 ### Geometry slides
 Single `#geo-host` div inside `slide-viewport`; SVG fetched once via JS, layers toggled per slide via `data-geo` attribute. Button overlays hidden, all dim layers hidden by default, revealed per slide.
 
-### Templates in CSS
-`slide--cover`, `slide--section`, `slide--title-bullets`, `slide--two-panel`, `slide--statement`, `slide--geometry`, `slide--image`, `slide--image-right`, `slide--three-panel`, `slide--closing`
-
 ### Pending
 - Image placeholders (15+ slides): batch AI image generation needed; brief documented in project memory
 - Visual verification pass in browser before event
 - Scaffold source: `docs/wrenching101-presentation-scaffold.md`
+
+## OG / Social Share — ADDED 2026-04-29
+
+- `app/opengraph-image.tsx` — generates OG image: bike geometry diagram with all dims visible, button labels hidden, dark background. No font loading. SVG rendered as PNG via next/og.
+- `app/layout.tsx` — OG + Twitter metadata on main page
+- Both presentation HTML pages have favicon (wrench emoji) and OG meta tags
+- og:title: "Presented by Mettle Cycling"
+- og:description: "An intro for cyclists who ride confidently and wrench... less so."
+- og:image: `https://wrenching101.mettlecycling.com/opengraph-image`
+- `next.config.ts` — `outputFileTracingIncludes` bundles `public/diagrams/**` and `public/fonts/**` for the OG image function
+
+### Open issue
+- FB debugger has not been re-verified after the final fix (font loading removed, SVG-only image). Needs confirmation that `/opengraph-image` renders correctly and FB shows it.
 
 ## Stack
 - Next.js App Router, TypeScript strict, CSS Modules
@@ -54,7 +70,7 @@ Licensed fonts ARE committed to git. No manual copy needed on new machines.
 2. **Intro + RSVP row** — 2-column card grid, stacks to 1-column on mobile
 3. **Agenda** — 8 topic cards in 2-column grid, stacks to 1-column on mobile
 4. **Bike frame diagram** — interactive SVG with click-to-reveal measurements
-5. **Footer** — links row: Mettle Cycling (link), Take-home curriculum, Syllabus coming soon
+5. **Footer** — Mettle Cycling (link), Take-home curriculum (links to /wrenching101-index), Syllabus coming soon
 
 ## Design decisions (do not revisit without reason)
 - New Athletic 54: all-caps display, limited character set, ASCII only, no contractions
@@ -86,7 +102,7 @@ Licensed fonts ARE committed to git. No manual copy needed on new machines.
 - Active labels dim inactive ones to 0.3 opacity
 - Toggle: click active label again to deactivate
 - Desc bar at bottom shows letter + description for each active measurement
-- Below each description: a 2-row × 3-col Road/Gravel/Cyclocross comparison table (teal-bordered grid, `var(--w-muted)` text, headers 15% larger than values)
+- Below each description: a 2-row x 3-col Road/Gravel/Cyclocross comparison table (teal-bordered grid, `var(--w-muted)` text, headers 15% larger than values)
 
 ### Comparison table
 - Data from `docs/frame-geometry-research.md` (Codex handoff)
@@ -95,9 +111,9 @@ Licensed fonts ARE committed to git. No manual copy needed on new machines.
 - All 12 measurements have table data
 
 ### Mobile label scaling
-- SCALE = 1.32 (1.15 baseline × 1.15)
+- SCALE = 1.32 (1.15 baseline x 1.15)
 - 4 label columns evenly distributed across full SVG width (MARGIN=40, gap calculated dynamically)
-- Rows within each column spread by ROW_EXTRA_SPACE=20 SVG units (middle row anchored, top/bottom offset ±20)
+- Rows within each column spread by ROW_EXTRA_SPACE=20 SVG units (middle row anchored, top/bottom offset +/-20)
 - Breakpoint: svgWidth > 800 skips mobile transforms
 
 ### Effects
@@ -107,7 +123,8 @@ Licensed fonts ARE committed to git. No manual copy needed on new machines.
 
 ## Footer
 - "Mettle Cycling" links to `https://www.mettlecycling.com` (opens new tab)
-- "Take-home curriculum" and "Syllabus coming soon" are muted text placeholders
+- "Take-home curriculum" links to `/wrenching101-index` (opens new tab)
+- "Syllabus coming soon" is muted text placeholder
 - On mobile: dot separators hide, items stack vertically
 
 ## RSVP backend — LIVE
@@ -128,7 +145,8 @@ await put('rsvps.json', '[]', { access: 'private', addRandomSuffix: false, allow
 ```
 
 ## Resume here (next session)
-1. Reset blob to `[]` and disable submit button before invites go out
-2. Re-enable submit button once date is confirmed and invites are ready (see memory reminder)
-3. Review diagram dotted line behavior (flagged for review, deferred)
-4. Any remaining polish issues on the diagram (mobile label layout improved but may need further tuning after live review)
+1. Verify FB debugger shows OG image at all three URLs after Vercel deploy settles
+2. Reset blob to `[]` and disable submit button before invites go out
+3. Re-enable submit button once date is confirmed and invites are ready
+4. Review diagram dotted line behavior (flagged for review, deferred)
+5. Image placeholders (15+ slides): batch AI image generation pending
