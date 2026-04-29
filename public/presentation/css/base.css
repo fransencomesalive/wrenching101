@@ -1,0 +1,92 @@
+@font-face {
+  font-family: 'New Athletic 54';
+  src: url('/fonts/New Athletic M54.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/Gotham-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/Gotham-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/Gotham-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/Gotham-BookItalic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Patheos';
+  src: url('/fonts/Patheos-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* ── Colors ──────────────────────────────────── */
+  --bg:           #010f16;
+  --teal:         #00aac9;
+  --amber:        #fcba4b;
+  --red:          #b83220;
+  --cream:        #f8d29a;
+  --cream-muted:  rgba(248, 210, 154, 0.70);
+  --cream-faint:  rgba(248, 210, 154, 0.40);
+  --teal-border:  rgba(0, 170, 201, 0.36);
+  --teal-fill:    rgba(0, 170, 201, 0.08);
+  --panel:        rgba(0, 12, 18, 0.85);
+  --divider:      rgba(0, 170, 201, 0.24);
+
+  /* ── Typography ──────────────────────────────── */
+  --font-display: 'New Athletic 54', Impact, sans-serif;
+  --font-body:    'Gotham', 'Avenir Next', Avenir, Helvetica, Arial, sans-serif;
+  --font-deco:    'Patheos', serif;
+
+  --w-light:  300;
+  --w-medium: 500;
+  --w-bold:   700;
+
+  /* ── Layout ──────────────────────────────────── */
+  --mx: 80px;
+  --my: 72px;
+  --mb: 200px;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-weight: var(--w-light);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

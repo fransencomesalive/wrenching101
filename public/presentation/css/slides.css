@@ -1,0 +1,645 @@
+/* ─── Canvas Background ────────────────────────────────────────────── */
+
+#bg-canvas,
+#grain-canvas {
+  position: fixed;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+  z-index: 0;
+}
+
+#bg-canvas    { filter: blur(90px); }
+#grain-canvas { mix-blend-mode: screen; }
+
+/* ─── Stage & Viewport ─────────────────────────────────────────────── */
+
+.slide-stage {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.slide-viewport {
+  width: 1920px;
+  height: 1080px;
+  position: relative;
+  transform-origin: center center;
+  flex-shrink: 0;
+}
+
+/* ─── Slide Base ───────────────────────────────────────────────────── */
+
+.slide {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+
+.slide.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ─── Deck Nav ─────────────────────────────────────────────────────── */
+
+.deck-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 40px 28px;
+  gap: 20px;
+  background: linear-gradient(to top, rgba(1, 15, 22, 0.80) 0%, transparent 100%);
+}
+
+.deck-nav__controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.deck-nav__btn {
+  background: none;
+  border: 1px solid var(--teal-border);
+  color: var(--cream-faint);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.deck-nav__btn:hover {
+  border-color: var(--teal);
+  color: var(--teal);
+}
+
+.deck-nav__btn.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.deck-nav__strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  justify-content: center;
+  max-width: 1400px;
+}
+
+.deck-nav__pip {
+  background: none;
+  border: none;
+  color: var(--cream-faint);
+  font-family: var(--font-body);
+  font-weight: var(--w-bold);
+  font-size: 9px;
+  letter-spacing: 0.05em;
+  padding: 4px 5px;
+  cursor: pointer;
+  transition: color 0.15s;
+  line-height: 1;
+}
+
+.deck-nav__pip:hover     { color: var(--cream-muted); }
+.deck-nav__pip.is-active { color: var(--teal); }
+
+.deck-nav__counter {
+  font-family: var(--font-body);
+  font-weight: var(--w-bold);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--cream-faint);
+  min-width: 60px;
+  text-align: center;
+}
+
+/* ─── Typography ───────────────────────────────────────────────────── */
+
+/* New Athletic 54 — ASCII only, no apostrophes, always uppercase */
+.heading-display {
+  font-family: var(--font-display);
+  font-size: 112px;
+  line-height: 0.92;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--cream);
+}
+
+.heading-display--red {
+  color: var(--red);
+}
+
+/* Gotham Bold — slide-level titles */
+.heading-slide {
+  font-family: var(--font-body);
+  font-weight: var(--w-bold);
+  font-size: 64px;
+  line-height: 1.0;
+  color: var(--cream);
+}
+
+/* Gotham Bold — card and panel titles */
+.heading-card {
+  font-family: var(--font-body);
+  font-weight: var(--w-bold);
+  font-size: 28px;
+  line-height: 1.2;
+  color: var(--cream);
+  margin-bottom: 16px;
+}
+
+/* Gotham Medium — secondary headings */
+.heading-sub {
+  font-family: var(--font-body);
+  font-weight: var(--w-medium);
+  font-size: 22px;
+  line-height: 1.3;
+  color: var(--cream-muted);
+  margin-bottom: 24px;
+}
+
+.body-text {
+  font-family: var(--font-body);
+  font-weight: var(--w-light);
+  font-size: 20px;
+  line-height: 1.7;
+  color: var(--cream-muted);
+}
+
+.body-text--large {
+  font-size: 24px;
+  line-height: 1.6;
+}
+
+/* Amber label — section heads, instructional kickers */
+.label {
+  font-family: var(--font-body);
+  font-weight: var(--w-bold);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--amber);
+  display: block;
+}
+
+/* Teal rule — section dividers */
+.rule {
+  height: 2px;
+  background: var(--teal);
+  border: none;
+}
+
+/* ─── Card Component ───────────────────────────────────────────────── */
+
+.card {
+  background: var(--panel);
+  border: 2px solid var(--teal-border);
+  padding: 48px;
+}
+
+/* ─── Bullet List ──────────────────────────────────────────────────── */
+
+.slide__bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.slide__bullet {
+  font-family: var(--font-body);
+  font-weight: var(--w-light);
+  font-size: 22px;
+  line-height: 1.5;
+  color: var(--cream-muted);
+  padding: 18px 0;
+  border-bottom: 1px solid var(--divider);
+}
+
+.slide__bullet:first-child {
+  border-top: 1px solid var(--divider);
+}
+
+.slide__bullet strong {
+  color: var(--cream);
+  font-weight: var(--w-bold);
+}
+
+/* ─── Geo Dimension Table ──────────────────────────────────────────── */
+
+.geo-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 24px;
+}
+
+.geo-table th {
+  font-family: var(--font-body);
+  font-weight: var(--w-bold);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--amber);
+  text-align: left;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--teal-border);
+}
+
+.geo-table th:not(:first-child) {
+  padding-left: 12px;
+}
+
+.geo-table td {
+  font-family: var(--font-body);
+  font-weight: var(--w-light);
+  font-size: 16px;
+  color: var(--cream-muted);
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(0, 170, 201, 0.10);
+  line-height: 1.4;
+}
+
+.geo-table td:not(:first-child) {
+  padding-left: 12px;
+}
+
+.geo-table tr:last-child td {
+  border-bottom: none;
+}
+
+.geo-table td:first-child {
+  color: var(--cream-faint);
+  font-size: 9px;
+  font-weight: var(--w-bold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  width: 72px;
+}
+
+/* ─── Image Placeholder ────────────────────────────────────────────── */
+
+.img-placeholder {
+  background: rgba(0, 170, 201, 0.04);
+  border: 2px dashed rgba(0, 170, 201, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 40px;
+}
+
+.img-placeholder__tag {
+  font-family: var(--font-body);
+  font-weight: var(--w-bold);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--teal);
+  opacity: 0.55;
+}
+
+.img-placeholder__desc {
+  font-family: var(--font-body);
+  font-weight: var(--w-light);
+  font-size: 16px;
+  color: var(--cream-faint);
+  text-align: center;
+  max-width: 320px;
+  line-height: 1.55;
+}
+
+/* ─── Template: Cover ──────────────────────────────────────────────── */
+
+.slide--cover .slide__content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: var(--my) var(--mx) var(--mb);
+}
+
+.slide--cover .slide__meta {
+  position: absolute;
+  top: var(--my);
+  right: var(--mx);
+  text-align: right;
+}
+
+.slide--cover .slide__date {
+  font-family: var(--font-body);
+  font-weight: var(--w-bold);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cream-faint);
+}
+
+.slide--cover .slide__rule {
+  width: 56px;
+  height: 2px;
+  background: var(--teal);
+  margin-bottom: 40px;
+}
+
+.slide--cover .slide__title {
+  font-family: var(--font-display);
+  font-size: 128px;
+  line-height: 0.88;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--cream);
+  margin-bottom: 36px;
+}
+
+.slide--cover .slide__sub {
+  font-family: var(--font-body);
+  font-weight: var(--w-light);
+  font-size: 22px;
+  color: var(--cream-muted);
+  max-width: 680px;
+  line-height: 1.6;
+}
+
+/* ─── Template: Section Divider ────────────────────────────────────── */
+
+.slide--section .slide__content {
+  position: absolute;
+  left: var(--mx);
+  right: var(--mx);
+  top: 50%;
+  transform: translateY(-52%);
+}
+
+.slide--section .slide__number {
+  font-family: var(--font-body);
+  font-weight: var(--w-bold);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--amber);
+  display: block;
+  margin-bottom: 36px;
+}
+
+.slide--section .slide__rule {
+  width: 56px;
+  height: 2px;
+  background: var(--teal);
+  margin-bottom: 44px;
+}
+
+.slide--section .heading-display {
+  font-size: 120px;
+}
+
+/* ─── Template: Title + Bullets ────────────────────────────────────── */
+
+.slide--title-bullets .slide__content {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr 1.7fr;
+  padding: var(--my) var(--mx) var(--mb);
+  gap: 80px;
+  align-items: flex-start;
+}
+
+/* ─── Template: Two Panel ───────────────────────────────────────────── */
+
+.slide--two-panel .slide__content {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: var(--my) var(--mx) var(--mb);
+  gap: 0;
+  align-items: flex-start;
+}
+
+.slide__panel {
+  padding-right: 64px;
+}
+
+.slide__panel + .slide__panel {
+  padding-right: 0;
+  padding-left: 64px;
+  border-left: 2px solid var(--divider);
+}
+
+/* ─── Template: Statement ───────────────────────────────────────────── */
+
+.slide--statement .slide__content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--my) var(--mx) var(--mb);
+  max-width: 1400px;
+}
+
+.heading-statement {
+  font-family: var(--font-body);
+  font-weight: var(--w-bold);
+  font-size: 80px;
+  line-height: 1.05;
+  color: var(--cream);
+}
+
+/* ─── Template: Geometry ────────────────────────────────────────────── */
+
+.slide--geometry .slide__content {
+  position: absolute;
+  left: var(--mx);
+  top: var(--my);
+  bottom: var(--mb);
+  width: 520px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.slide--geometry .card {
+  padding: 40px;
+}
+
+.slide--geometry .heading-card {
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+
+.slide--geometry .label {
+  margin-bottom: 16px;
+}
+
+.slide--geometry .body-text {
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+/* Shared SVG host — right 2/3 of viewport, above all slides */
+#geo-host {
+  position: absolute;
+  left: 640px;
+  right: var(--mx);
+  top: var(--my);
+  bottom: 0;
+  padding-bottom: var(--mb);
+  visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+body.is-geo #geo-host {
+  visibility: visible;
+}
+
+#geo-host svg {
+  width: 100%;
+  height: 100%;
+  max-height: 800px;
+  overflow: visible;
+}
+
+/* ─── Template: Image + Text ────────────────────────────────────────── */
+
+.slide--image .slide__content {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+}
+
+.slide--image .img-placeholder {
+  height: 100%;
+  border: none;
+  border-right: 2px solid var(--divider);
+}
+
+.slide--image .slide__text-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--my) var(--mx);
+}
+
+/* ─── Template: Closing ─────────────────────────────────────────────── */
+
+.slide--closing .slide__content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: var(--my) var(--mx) var(--mb);
+}
+
+.slide--closing .slide__rule {
+  width: 100%;
+  height: 2px;
+  background: var(--teal-border);
+  margin-bottom: 48px;
+}
+
+/* ─── Template: Three Panel ─────────────────────────────────────────── */
+
+.slide--three-panel .slide__content {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: var(--my) var(--mx) var(--mb);
+  gap: 0;
+  align-items: flex-start;
+}
+
+.slide__col {
+  padding-right: 56px;
+  display: flex;
+  flex-direction: column;
+}
+
+.slide__col + .slide__col {
+  padding-left: 56px;
+  padding-right: 56px;
+  border-left: 1px solid var(--divider);
+}
+
+.slide__col:last-child {
+  padding-right: 0;
+}
+
+/* ─── Template: Image Right ─────────────────────────────────────────── */
+
+.slide--image-right .slide__content {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+}
+
+.slide--image-right .slide__text-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--my) var(--mx);
+  border-right: 2px solid var(--divider);
+}
+
+.slide--image-right .img-placeholder {
+  height: 100%;
+  border: none;
+  border-left: 2px dashed rgba(0, 170, 201, 0.22);
+}
+
+/* ─── Compact Bullets ────────────────────────────────────────────────── */
+
+.slide__bullets--compact .slide__bullet {
+  font-size: 19px;
+  padding: 13px 0;
+  line-height: 1.45;
+}
+
+/* ─── Geometry Letter ────────────────────────────────────────────────── */
+
+.geo-letter {
+  font-family: var(--font-display);
+  font-size: 60px;
+  color: var(--amber);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  margin: 10px 0 4px;
+}
+
+/* ─── Slide Label Strip (section label on section dividers) ─────────── */
+
+.slide--section .slide__label {
+  position: absolute;
+  top: var(--my);
+  left: var(--mx);
+  font-family: var(--font-body);
+  font-weight: var(--w-bold);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cream-faint);
+}

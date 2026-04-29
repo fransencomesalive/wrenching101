@@ -3,6 +3,42 @@
 ## Status
 Page is live at `wrenching101.mettlecycling.com`. RSVP backend live (Vercel Blob + silent submit, no email client prompt). Submit button is currently enabled with test data in the blob. Before sending invites: reset blob data and disable submit button until date is confirmed.
 
+## Presentation — BUILT 2026-04-29
+
+Static HTML deck at `public/presentation/` served at `/presentation/` by Vercel.
+
+### Structure
+- `index.html` — password gate (`M3ttle@sfuck!`, sessionStorage key `w101_auth`)
+- `slides.html` — 89-slide deck, 1920x1080 viewport with proportional scaling
+- `css/base.css`, `css/gate.css`, `css/slides.css`
+- `js/gate.js`, `js/slides.js`
+- Geometry SVG: `public/diagrams/BikeGeo-chart.svg` (committed; was missing from repo)
+
+### Slide count and sections
+- 01: Cover
+- 02-05: Intro
+- 06-12: Section 01 — Bike Types and Geometry
+- 13-18: Section 02 — Frame Materials
+- 19-26: Section 03 — Fit Basics
+- 27-34: Section 04 — Drivetrain Types
+- 35-42: Section 05 — Drivetrain Maintenance
+- 43-53: Section 06 — Tire Talk
+- 54-62: Section 07 — Adjustments and Diagnosis
+- 63-70: Section 08 — Pre-Ride Checks
+- 71-86: Geometry Deep Dive (12 geo slides with live SVG layer toggle)
+- 87-89: Closing / Resources / Q&A
+
+### Geometry slides
+Single `#geo-host` div inside `slide-viewport`; SVG fetched once via JS, layers toggled per slide via `data-geo` attribute. Button overlays hidden, all dim layers hidden by default, revealed per slide.
+
+### Templates in CSS
+`slide--cover`, `slide--section`, `slide--title-bullets`, `slide--two-panel`, `slide--statement`, `slide--geometry`, `slide--image`, `slide--image-right`, `slide--three-panel`, `slide--closing`
+
+### Pending
+- Image placeholders (15+ slides): batch AI image generation needed; brief documented in project memory
+- Visual verification pass in browser before event
+- Scaffold source: `docs/wrenching101-presentation-scaffold.md`
+
 ## Stack
 - Next.js App Router, TypeScript strict, CSS Modules
 - Local: `http://localhost:3000`
