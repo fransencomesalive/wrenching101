@@ -159,7 +159,14 @@ export default function Page() {
               Mettle&nbsp;Cycling
             </a>
             <span className={styles.footerDot} aria-hidden="true">·</span>
-            <span className={styles.footerMuted}>Take-home curriculum</span>
+            <a
+              href="/presentation/"
+              className={styles.footerLink}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Take-home&nbsp;curriculum
+            </a>
             <span className={styles.footerDot} aria-hidden="true">·</span>
             <span className={styles.footerMuted}>Syllabus coming soon</span>
           </div>
