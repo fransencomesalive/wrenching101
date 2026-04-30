@@ -3,44 +3,36 @@
 ## Status
 Page is live at `wrenching101.mettlecycling.com`. RSVP backend live. Submit button enabled with test data. Before invites go out: reset blob and disable submit button.
 
-## BROKEN: OG Share Image — needs fix next session
+## BLOCKING: OG Share Image — one manual step remaining
 
-Multiple attempts were made to get the OG share image working. None were verified as working in FB debugger.
+### Root cause (2026-04-29 diagnosis)
+All previous OG attempts failed because **Vercel Authentication was enabled on the project**, causing the site to return 403 to all unauthenticated requests including Facebook's scraper and iMessage. The OG tags, image, and URLs were correct the entire time. The problem was access, not content.
 
-### What was tried and failed
-1. `app/opengraph-image.tsx` using next/og — endpoint generated 200 image/png per curl, but FB debugger never showed the image. Likely cause: FB scraper timeout on SVG-to-PNG rendering via satori/resvg serverless cold start.
-2. Various redesigns of the same endpoint — wrong approach (bug fix not redesign).
-3. Static PNG via sharp — `public/og-image.png` generated (1200x630, all dims visible, no labels, dark background). All OG tags now point to `https://wrenching101.mettlecycling.com/og-image.png`. Dynamic endpoint removed.
+### What is in place (correct, committed, deployed)
+- `public/og-image.png` — 1200×630 PNG, the bike geometry diagram, 94KB
+- OG tags in `layout.tsx` (root page), `index.html` (gate), `slides.html` (curriculum)
+- All three point to `https://wrenching101.mettlecycling.com/og-image.png`
+- `og:url`, `og:image:width: 1200`, `og:image:height: 630` all present
 
-### Current state
-- `public/og-image.png` is committed and deployed.
-- All three pages point to it: `/`, `/wrenching101-index`, `/wrenching101-slides`.
-- **NOT VERIFIED** in FB debugger — session ended before confirmation.
-- If still broken: check that `/og-image.png` is publicly accessible, check FB debugger error message, try iMessage or Twitter card validator as alternative test.
+### One step remaining — manual, Vercel dashboard
+Go to Vercel → wrenching101 project → Settings → Deployment Protection → toggle **Vercel Authentication OFF** → Save.
 
-### OG tag values (correct, verified via curl)
-- `og:title`: Presented by Mettle Cycling
-- `og:description`: An intro for cyclists who ride confidently and wrench... less so.
-- `og:image`: `https://wrenching101.mettlecycling.com/og-image.png`
+After saving: run the FB sharing debugger on `https://wrenching101.mettlecycling.com/` and hit "Scrape Again". Preview should appear.
 
 ---
 
-## INCOMPLETE: Mobile styling — needs verification next session
+## Mobile — Fixed and pushed (2026-04-29), needs visual verification
 
 ### What was done
-- `gate.css`: Added `@media (max-width: 600px)` — title `clamp(36px, 12vw, 60px)`, form `calc(100vw - 48px)`.
-- `slides.css`: Added `@media (max-width: 768px)` — nav buttons 48x48px, pip strip hidden, nav padding reduced.
+- `slides.css`: `@media (max-width: 768px)` — nav buttons 48x48px, pip strip hidden, nav padding reduced, **`slide-stage` gets `padding-bottom: 82px`** so flex centering stays above the nav
+- `slides.js`: scale calculation now subtracts actual nav height from `window.innerHeight` before computing scale — prevents slide from growing into the nav area
+- `slides.js`: swipe gesture support added — horizontal swipe > 40px threshold advances or retreats slides
+- `gate.css`: `@media (max-width: 600px)` — title `clamp(36px, 12vw, 60px)`, form `calc(100vw - 48px)`
 
-### What was NOT done — Claude's failure
-- **Mobile was never verified at 320/375/390px before shipping.** This is a hard-coded mandatory rule that was violated twice in the same session.
-- Gate page: title fix applied, but no visual confirmation that it renders correctly on small screens.
-- Slides: JS proportional scaling handles content, but the nav fix was not verified on actual mobile viewport.
-- No check was done for text overflow, clipping, or interaction issues at any mobile breakpoint.
-
-### What next session must do
-1. Open `/wrenching101-index` at 320px, 375px, 390px — confirm title fits, form is usable.
-2. Open `/wrenching101-slides` at 375px — confirm nav arrows are tappable, counter is visible, no layout breakage.
-3. Fix anything that doesn't pass visual check before calling it done.
+### Still needs visual verification
+Open on an actual phone before sharing any links:
+1. `/wrenching101-index` at 320px, 375px, 390px — title fits, form usable, gate functions
+2. `/wrenching101-slides` at 375px portrait and landscape — slide content visible, nav clear, swipe works, no overlap
 
 ---
 
@@ -53,7 +45,6 @@ Multiple attempts were made to get the OG share image working. None were verifie
 
 ### Pending
 - Image placeholders (15+ slides): batch AI image generation needed
-- Visual verification pass before event
 - Review diagram dotted line behavior (deferred)
 
 ---
@@ -80,8 +71,8 @@ Licensed fonts committed to git. No manual copy needed.
 - To reset: `put('rsvps.json', '[]', { access: 'private', addRandomSuffix: false, allowOverwrite: true, ... })`
 
 ## Resume here (next session)
-1. Verify OG image shows in FB debugger — scrape `https://wrenching101.mettlecycling.com/` and both presentation URLs
-2. Verify mobile layout at 320/375/390px for gate and slides nav
-3. Fix anything broken from items 1 and 2
+1. **Turn off Vercel Authentication** (Vercel dashboard → wrenching101 → Settings → Deployment Protection → toggle off → Save)
+2. Verify OG in FB debugger after step 1
+3. Visual mobile check on phone: gate at 320/375/390px, slides portrait and landscape
 4. Reset blob and disable submit before invites go out
 5. Image placeholder generation (15+ slides)
