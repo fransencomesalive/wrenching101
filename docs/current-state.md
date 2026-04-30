@@ -3,21 +3,20 @@
 ## Status
 Page is live at `wrenching101.mettlecycling.com`. RSVP backend live. Submit button enabled with test data. Before invites go out: reset blob and disable submit button.
 
-## BLOCKING: OG Share Image — one manual step remaining
+## OG Share Preview
 
-### Root cause (2026-04-29 diagnosis)
-All previous OG attempts failed because **Vercel Authentication was enabled on the project**, causing the site to return 403 to all unauthenticated requests including Facebook's scraper and iMessage. The OG tags, image, and URLs were correct the entire time. The problem was access, not content.
+### Current status (2026-04-29)
+Production now returns `200` to unauthenticated requests and `og-image.png` is publicly reachable. The remaining issue was stale/wrong share copy in metadata: `og:title` was `Presented by Mettle Cycling`, so crawlers were showing the wrong title.
 
-### What is in place (correct, committed, deployed)
+### What is in place
 - `public/og-image.png` — 1200×630 PNG, the bike geometry diagram, 94KB
 - OG tags in `layout.tsx` (root page), `index.html` (gate), `slides.html` (curriculum)
+- Share title: `Wrenching 101 p/b mettle Cycling`
+- Share description: `An Intro for cyclists who ride good and want to wrench good too.`
 - All three point to `https://wrenching101.mettlecycling.com/og-image.png`
-- `og:url`, `og:image:width: 1200`, `og:image:height: 630` all present
+- `og:url`, `og:image:width: 1200`, `og:image:height: 630`, `og:image:type`, and `og:image:alt` all present
 
-### One step remaining — manual, Vercel dashboard
-Go to Vercel → wrenching101 project → Settings → Deployment Protection → toggle **Vercel Authentication OFF** → Save.
-
-After saving: run the FB sharing debugger on `https://wrenching101.mettlecycling.com/` and hit "Scrape Again". Preview should appear.
+After deployment: run the FB sharing debugger on `https://wrenching101.mettlecycling.com/` and hit "Scrape Again".
 
 ---
 
@@ -71,8 +70,7 @@ Licensed fonts committed to git. No manual copy needed.
 - To reset: `put('rsvps.json', '[]', { access: 'private', addRandomSuffix: false, allowOverwrite: true, ... })`
 
 ## Resume here (next session)
-1. **Turn off Vercel Authentication** (Vercel dashboard → wrenching101 → Settings → Deployment Protection → toggle off → Save)
-2. Verify OG in FB debugger after step 1
-3. Visual mobile check on phone: gate at 320/375/390px, slides portrait and landscape
-4. Reset blob and disable submit before invites go out
-5. Image placeholder generation (15+ slides)
+1. Verify OG in FB debugger after deployment
+2. Visual mobile check on phone: gate at 320/375/390px, slides portrait and landscape
+3. Reset blob and disable submit before invites go out
+4. Image placeholder generation (15+ slides)
