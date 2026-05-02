@@ -1,5 +1,10 @@
 # Current State — Wrenching 101
 
+## Grain background memory
+- `Original MTTL Grain Background` is now codified in `docs/grain-background-presets.md` as the locked Wrenching 101/Mettle grain reference.
+- `Presentation Grain Background` is the subtler Lee Hill Labs variant. Use it only when Randall asks for the Lee Hill/presentation feel.
+- For both presets, palette swaps may change hex colors only unless Randall explicitly asks for new animation, opacity, blur, density, or mesh behavior.
+
 ## Status
 Page is live at `wrenching101.mettlecycling.com`. RSVP backend live. Submit button enabled with test data. Before invites go out: reset blob and disable submit button.
 

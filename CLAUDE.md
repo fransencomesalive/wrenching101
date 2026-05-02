@@ -10,6 +10,7 @@ Before any meaningful work:
 1. `AGENTS.md`
 2. `docs/brief.md`
 3. `docs/current-state.md`
+4. `docs/grain-background-presets.md`
 
 ## Brand reference (in Claude memory)
 - Voice and tone: memory file `mettle_brand_voice.md`
@@ -20,6 +21,7 @@ Design quality is a standing priority — not something to enter when asked. Pus
 
 - Take a headless screenshot before reporting any frontend task complete
 - Trace the visual consequence of every CSS change before committing to it
+- Use the locked grain background presets in `docs/grain-background-presets.md` when Randall references Mettle, MTTL, Wrenching, Lee Hill, or presentation grain backgrounds; change hex colors only unless asked to create a new variation.
 - WCAG 2.2 is the floor: 16px body minimum, 4.5:1 contrast, 24x24px tap targets
 
 ## Working style
